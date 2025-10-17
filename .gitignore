@@ -1,0 +1,6 @@
+# Nix build results
+result*
+
+# Vim/Neovim swap files
+*.swp
+*.swo
