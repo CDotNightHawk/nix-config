@@ -90,67 +90,6 @@
   '';
   };
 
-  # --- NvChad Configuration ---
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true; # Makes nvim the default for `EDITOR`
-  };
-
-  # Fetch NvChad source and link it to ~/.config/nvim
-  # This is the declarative, Nix-native way to install it.
-  xdg.configFile."nvim" = {
-    source = pkgs.fetchFromGitHub {
-      owner = "NvChad";
-      repo = "NvChad";
-      rev = "6fb5c313edc966f187c7483a16affaec0518b641";
-      # New corresponding hash for that commit
-      hash = "sha256-U81M3RFMP7jKirxj3ROCsyqTRXGCrtN6VsPrewlPSLI=";
-    };
-    recursive = true;
-  };
-
-  # Declaratively manage your custom NvChad config.
-  # This file will be linked to ~/.config/nvim/lua/custom/chadrc.lua
-  xdg.configFile."nvim/lua/custom/chadrc.lua".text = ''
-  -- This is your custom configuration file.
-  -- For examples, see: https://nvchad.com/docs/config/overriding_defaults
-
-  ---@type ChadrcConfig
-  local M = {}
-
-  M.ui = {
-    theme = 'onedark',
-    hl_override = {
-      Comment = { italic = true },
-    },
-  }
-
-  -- Add this new section for Mason
-  M.mason = {
-    -- This list tells Mason which tools to automatically install.
-    -- These will be installed the first time you open Neovim after rebuilding.
-    ensure_installed = {
-      -- C/C++ Language Server (for code completion, diagnostics, etc.)
-      "clangd",
-
-      -- Debug Adapter (for debugging with nvim-dap)
-      "codelldb",
-
-      -- C/C++ Code Formatter
-      "clang-format",
-
-      -- C/C++ Linter for static analysis
-      "clang-tidy",
-    },
-  }
-
-  M.plugins = {
-    -- You can add custom plugins here if needed
-  }
-
-  return M
-  '';
-
   # Let Home Manager manage itself
   programs.home-manager.enable = true;
 }
