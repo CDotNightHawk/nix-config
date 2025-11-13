@@ -25,5 +25,15 @@
       efi.canTouchEfiVariables = true;
     };
     tmp.cleanOnBoot = true;
+    plymouth = {
+      enable = true;
+      themePackages = [
+        (pkgs.adi1090x-plymouth-themes.override {
+          selected_themes = [ "dragon" ];
+        })
+      ];
+      theme = "dragon";
+    }
+    kernelParams = [ "quiet" "splash" ];
   };
 }

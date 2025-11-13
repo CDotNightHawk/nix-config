@@ -35,13 +35,13 @@
     "${modulesPath}/profiles/minimal.nix"
   ];
 
-  sops = {
-    defaultSopsFile = ../secrets/tataru/default.yaml;
-    age = {
-      keyFile = "/etc/sops-key.txt";
-      generateKey = true;
-    };
-  };
+  #sops = {
+  #  defaultSopsFile = r.root + /secrets/framework/default.yaml;
+  #  age = {
+  #    keyFile = "/etc/sops-key.txt";
+  #    generateKey = true;
+  #  };
+  #};
 
   boot = {
     extraModprobeConfig = ''
@@ -61,14 +61,6 @@
       80
       443
     ];
-    # https://wiki.nixos.org/wiki/NixOS_Containers
-    nat = {
-      enable = true;
-      internalInterfaces = [ "ve-+" ];
-      externalInterface = "eth0";
-      # Lazy IPv6 connectivity for the container
-      enableIPv6 = true;
-    };
   };
 
   services = {

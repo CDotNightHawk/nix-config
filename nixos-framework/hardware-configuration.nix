@@ -8,11 +8,35 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "thunderbolt" "uas" "sd_mod" ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-amd" ];
+  # === KERNEL MODULES ===
+  boot.initrd.availableKernelModules = [
+    # Common modules from both configs
+    "xhci_pci"
+    "thunderbolt"
+    "nvme"
+    "uas"
+  ] ++ (lib.mkIf config.nixpkgs.hostPlatform.isIntel [
+    # Intel-specific modules 
+    "usbhid"
+    "i915"
+    "iwlwifi"
+  ]) ++ (lib.mkIf config.nixpkgs.hostPlatform.isAmd [
+    # AMD-specific modules 
+    "sd_mod"
+  ]);
+
+  boot.initrd.kernelModules = [ ]; [cite: 4, 12]
+
+  # Set KVM module based on CPU
+  boot.kernelModules =
+    if config.nixpkgs.hostPlatform.isIntel then [ "kvm-intel" ]
+    else if config.nixpkgs.hostPlatform.isAmd then [ "kvm-amd" ]
+    else [ ];
+
   boot.extraModulePackages = [ ];
-  boot.extraModprobeConfig = ''
+
+  # Add AMD-specific modprobe config only on the AMD machine 
+  boot.extraModprobeConfig = lib.mkIf config.nixpkgs.hostPlatform.isAmd ''
     options mt7925e disable_aspm=1 disable_ps=1 fwlog_en=0
   '';
 
@@ -43,5 +67,6 @@
   # networking.interfaces.wlp1s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.cpu.intel.updateMicrocode = lib.mkIf config.nixpkgs.hostPlatform.isIntel (lib.mkDefault config.hardware.enableRedistributableFirmware);
+  hardware.cpu.amd.updateMicrocode = lib.mkIf config.nixpkgs.hostPlatform.isAmd (lib.mkDefault config.hardware.enableRedistributableFirmware);
 }
