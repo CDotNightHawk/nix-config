@@ -24,8 +24,8 @@ in
   SearchBar = "unified";
 
   ExtensionSettings = {
-    "uBlock0@raymondhill.net" = {
-      install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
+    "adnauseam@rednoise.org" = {
+      install_url = "https://addons.mozilla.org/firefox/downloads/latest/adnauseam/latest.xpi";
       installation_mode = "force_installed";
     };
     "plasma-browser-integration@kde.org" = {
@@ -42,6 +42,10 @@ in
     };
     "nekocaption@gmail.com" = {
       install_url = "https://addons.mozilla.org/firefox/downloads/latest/nekocap/latest.xpi";
+      installation_mode = "force_installed";
+    };
+    "hello@bitwarden.com" = {
+      install_url = "https://addons.mozilla.org/firefox/downloads/latest/bitwarden-password-manager/latest.xpi";
       installation_mode = "force_installed";
     };
   };

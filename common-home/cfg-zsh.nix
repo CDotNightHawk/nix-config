@@ -29,6 +29,10 @@ in
       mkae = "make";
       nvl = "nix -v -L";
       nixgc = "nix-env --delete-generations --profile ${config.xdg.stateHome}/nix/profiles/home-manager old; sudo ${config.nix.package}/bin/nix-collect-garbage -d;";
+      nano = "vim";
+      kwrite = "kate";
+      ls = "eza";
+      encrypt = "sops --encrypt --in-place"
     };
     oh-my-zsh = {
       enable = true;

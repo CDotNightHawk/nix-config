@@ -64,8 +64,6 @@
     cachix
     nix-tree
     rsync
-    megatools
-    gdown
   ];
 
   home.sessionVariables = with config.xdg; {
