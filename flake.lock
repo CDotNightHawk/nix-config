@@ -215,14 +215,17 @@
       "inputs": {
         "nixpkgs": [
           "nixos-unstable"
+        ],
+        "treefmt-nix": [
+          "treefmt-nix"
         ]
       },
       "locked": {
-        "lastModified": 1763359855,
-        "narHash": "sha256-8VTa/NcEE9m6F/faup3lMAOKGFbGzhth1pWpqol44/Q=",
+        "lastModified": 1763415506,
+        "narHash": "sha256-aOJJEmq7qwsbyu8qfksCAkqfaCR4RUOAP2O8YIF34Yg=",
         "owner": "CDotNightHawk",
         "repo": "nur-packages",
-        "rev": "9a6c14da6cc8678ec6da246d28619f1a956f78f3",
+        "rev": "31f8f30ed670ca0a45a47dcff603844c3dedf892",
         "type": "github"
       },
       "original": {
