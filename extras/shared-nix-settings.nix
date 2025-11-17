@@ -35,25 +35,14 @@
         type = "github";
       };
     };
-    hax-nur = {
+    night-nur = {
       from = {
-        id = "hax-nur";
+        id = "night-nur";
         type = "indirect";
       };
       to = {
-        owner = "ihaveamac";
+        owner = "CDotNightHawk";
         repo = "nur-packages";
-        type = "github";
-      };
-    };
-    ninfs = {
-      from = {
-        id = "ninfs";
-        type = "indirect";
-      };
-      to = {
-        owner = "ihaveamac";
-        repo = "ninfs";
         type = "github";
       };
     };
@@ -79,20 +68,20 @@
     extra-nix-path = [
       "nixpkgs=flake:nixpkgs"
       "nur=flake:nur"
-      "hax-nur=flake:hax-nur"
+      "night-nur=flake:night-nur"
     ];
     # mkForce is used here because on a home-manager setup, not including cache.nixos.org seems to cause nix to ignore it
     # but on NixOS (and maybe nix-darwin), it is already included, so adding it would normally include it twice
     # so i use mkForce here to make it only list the ones i want
     substituters = lib.mkForce [
       "https://cache.nixos.org"
-      "https://ihaveahax.cachix.org"
-      "https://attic.ihaveahax.net/ihaveahax"
+      "https://nighthawk.cachix.org"
+      "https://attic.nanofox.dev/cdotnighthawk"
     ];
     trusted-public-keys = lib.mkForce [
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-      "ihaveahax.cachix.org-1:587ONPwRnx0AQu27y7rD1f7jTj2isGRAVDVddKEAv7I="
-      "ihaveahax:oiYXxjqHZYe4OzvX6CGFfUIK9HEZBWPS0y7DpcZ5Cok="
+      "nighthawk.cachix.org-1:+Ppa/mjYFZFhMz95oSQNRJo+J9koACCy/4GtcautuYc="
+      "changeme!!"
     ];
     # this will be overridden in home-manager
     netrc-file = "/etc/nix/netrc";

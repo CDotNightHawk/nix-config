@@ -6,9 +6,11 @@
   nixConfig = {
     extra-substituters = [
       "https://nighthawk.cachix.org"
+      "https://attic.nanofox.dev/cdotnighthawk"
     ];
     extra-trusted-public-keys = [
       "nighthawk.cachix.org-1:+Ppa/mjYFZFhMz95oSQNRJo+J9koACCy/4GtcautuYc="
+      "changeme!!" #Edit all of these!!!!!!!!!
     ];
   };
 
@@ -39,8 +41,8 @@
       url = "github:nix-community/lanzaboote/v0.4.2";
       inputs.nixpkgs.follows = "nixos-unstable";
     };
-    hax-nur = {
-      url = "github:ihaveamac/nur-packages/staging";
+    night-nur = {
+      url = "github:CDotNightHawk/nur-packages/staging";
       inputs.nixpkgs.follows = "nixos-unstable";
       inputs.treefmt-nix.follows = "treefmt-nix";
     };
@@ -66,7 +68,7 @@
       nixos-apple-silicon,
       treefmt-nix,
       lanzaboote,
-      hax-nur,
+      night-nur,
       lix,
       lix-module,
       sops-nix,
@@ -88,8 +90,7 @@
                 home-manager.darwinModules.home-manager
               else
                 home-manager.nixosModules.home-manager;
-            hax-nur = hax-nur.outputs.packages.${system};
-            ninfs = ninfs.outputs.packages.${system};
+            night-nur = night-nur.outputs.packages.${system};
           };
         }
       );

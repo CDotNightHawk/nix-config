@@ -7,7 +7,7 @@
     allowUnfree = true;
 
     packageOverrides = pkgs: {
-      hax = import ${inputs.hax-nur} { inherit pkgs; };
+      nightpkg = import ${inputs.night-nur} { inherit pkgs; };
     };
   }
 ''

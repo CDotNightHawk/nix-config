@@ -29,7 +29,7 @@
     (r.common-nixos + /cfg-delete-old-hm-profiles.nix)
     ./hardware-configuration.nix
 
-    inputs.hax-nur.nixosModules.overlay
+    inputs.night-nur.nixosModules.overlay
     inputs.lix-module.nixosModules.default
     inputs.sops-nix.nixosModules.sops
     "${modulesPath}/profiles/minimal.nix"
