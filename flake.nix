@@ -6,11 +6,9 @@
   nixConfig = {
     extra-substituters = [
       "https://nighthawk.cachix.org"
-      "https://attic.nanofox.dev/cdotnighthawk"
-    ];
+    ];#"https://attic.nanofox.dev/cdotnighthawk"
     extra-trusted-public-keys = [
       "nighthawk.cachix.org-1:+Ppa/mjYFZFhMz95oSQNRJo+J9koACCy/4GtcautuYc="
-      "changeme!!" #Edit all of these!!!!!!!!!
     ];
   };
 
@@ -116,9 +114,9 @@
     {
       darwinConfigurations = {
         # MacBook Air M2
-        "alphinaud" = nix-darwin.lib.darwinSystem (
+        "nightair" = nix-darwin.lib.darwinSystem (
           let
-            me = "nighthaw";
+            me = "nighthawk";
             system = "aarch64-darwin";
           in
           rec {
@@ -209,4 +207,5 @@
         formatting = treefmtEval.${system}.config.build.check self;
       });
     };
+  };
 }
