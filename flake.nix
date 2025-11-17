@@ -208,5 +208,4 @@
         formatting = treefmtEval.${system}.config.build.check self;
       });
     };
-  };
 }
