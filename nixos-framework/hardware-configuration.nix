@@ -25,7 +25,7 @@
     "sd_mod"
   ]);
 
-  boot.initrd.kernelModules = [ ]; [cite: 4, 12]
+  boot.initrd.kernelModules = [ ];
 
   # Set KVM module based on CPU
   boot.kernelModules =
