@@ -8,7 +8,7 @@
 }:
 
 {
-  options.hax.packages = with lib; {
+  options.nightpkg.packages = with lib; {
     enableExtra = mkOption {
       default = true;
       description = "Enable additional packages not meant for slimmer setups.";
@@ -31,7 +31,7 @@
         xxd
       ];
     })
-    (lib.mkIf config.hax.packages.enableExtra {
+    (lib.mkIf config.nightpkg.packages.enableExtra {
       environment.systemPackages = with pkgs; [
         powershell
         usbutils
