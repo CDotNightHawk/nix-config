@@ -127,6 +127,7 @@
             modules = [ ./nix-darwin-alphinaud/darwin-configuration.nix ];
           }
         ); # NightAir
+      };
 
       nixosConfigurations = {
         "framework" = nixos-unstable.lib.nixosSystem (
