@@ -11,22 +11,22 @@
 }:
 
 {
-  imports = [
-    (r.extras + /shared-nix-settings.nix)
-    (r.common-nixos + /cfg-misc.nix)
-    (r.common-nixos + /cfg-home-manager.nix)
-    (r.common-nixos + /cfg-common-system-packages.nix)
-    (r.common-nixos + /cfg-linux-kernel.nix)
-    (r.common-nixos + /cfg-ssh.nix)
-    (r.common-nixos + /cfg-nix-settings.nix)
-    (r.common-nixos + /cfg-my-user.nix)
-    (r.common-nixos + /cfg-podman.nix)
-    (r.common-nixos + /cfg-shell-aliases.nix)
-    (r.common-nixos + /cfg-sudo-config.nix)
-    (r.common-nixos + /cfg-auto-optimise.nix)
-    (r.common-nixos + /cfg-xdg.nix)
-    (r.common-nixos + /cfg-zsh.nix)
-    (r.common-nixos + /cfg-delete-old-hm-profiles.nix)
+  imports = with r; [
+    (extras + /shared-nix-settings.nix)
+    (common-nixos + /cfg-misc.nix)
+    (common-nixos + /cfg-home-managenix)
+    (common-nixos + /cfg-common-system-packages.nix)
+    (common-nixos + /cfg-linux-kernel.nix)
+    (common-nixos + /cfg-ssh.nix)
+    (common-nixos + /cfg-nix-settings.nix)
+    (common-nixos + /cfg-my-usenix)
+    (common-nixos + /cfg-podman.nix)
+    (common-nixos + /cfg-shell-aliases.nix)
+    (common-nixos + /cfg-sudo-config.nix)
+    (common-nixos + /cfg-auto-optimise.nix)
+    (common-nixos + /cfg-xdg.nix)
+    (common-nixos + /cfg-zsh.nix)
+    (common-nixos + /cfg-delete-old-hm-profiles.nix)
     ./hardware-configuration.nix
 
     inputs.night-nur.nixosModules.overlay
@@ -89,16 +89,6 @@
     automatic = true;
     options = "--delete-old";
     dates = "09:00";
-  };
-
-  users.users = {
-    nighthawk = {
-      description = "nighthawk";
-      isNormalUser = true;
-      uid = 1001;
-      linger = true;
-      shell = pkgs.bashInteractive;
-    };
   };
 
   home-manager.users.${me}.imports = [ ./home.nix ];

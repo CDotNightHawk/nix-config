@@ -36,7 +36,7 @@
       inputs.nixpkgs.follows = "nixos-unstable";
     };
     lanzaboote = {
-      url = "github:nix-community/lanzaboote/v0.4.2";
+      url = "github:nix-community/lanzaboote/v0.4.3";
       inputs.nixpkgs.follows = "nixos-unstable";
     };
     night-nur = {
@@ -181,7 +181,6 @@
               flakeConfigurations = {
                 nixos-framework = self.nixosConfigurations.framework.config.system.build.toplevel;
                 nixos-workstation = self.nixosConfigurations.workstation.config.system.build.toplevel;
-                iso = iso;
               };
               flakeInputs = self.inputs;
             };

@@ -4,13 +4,14 @@
   lib,
   pkgs,
   r,
+  inputs,
   ...
 }:
 
 {
-  imports = [
-    (r.common-home + /linux.nix)
-    (r.common-home + /core.nix)
+  imports = with r; [
+    (common-home + /linux.nix)
+    (common-home + /core.nix)
     inputs.sops-nix.homeManagerModules.sops
   ];
 
