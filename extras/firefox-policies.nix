@@ -10,11 +10,16 @@ let
   };
 in
 {
+  AutofillAddressEnabled = false;
+  AutofillCreditCardEnabled = false;
+  CaptivePortal = true;
   DisableTelemetry = true;
   DisableFirefoxStudies = true;
   DisablePocket = true;
+  DisableFirefoxAccounts = true;
   EnableTrackingProtection = {
     Value = true;
+    Locked = true;
     Cryptomining = true;
     Fingerprinting = true;
     EmailTracking = true;
@@ -22,11 +27,24 @@ in
   DisplayBookmarksToolbar = "newtab";
   DontCheckDefaultBrowser = true;
   SearchBar = "unified";
+  DNSOverHTTPS = {
+    Enabled =  true;
+    ProviderURL = "1.1.1.1",
+    "Locked": true | false;
+    "ExcludedDomains": ["kennesaw.edu"];
+    "Fallback": true;
+  }
+
+  UserMessaging = {
+    ExtensionRecommendations = false;
+    SkipOnboarding = true;
+  };
 
   ExtensionSettings = {
     "adnauseam@rednoise.org" = {
       install_url = "https://addons.mozilla.org/firefox/downloads/latest/adnauseam/latest.xpi";
       installation_mode = "force_installed";
+      private_browsing = true;
     };
     "plasma-browser-integration@kde.org" = {
       install_url = "https://addons.mozilla.org/firefox/downloads/latest/plasma-integration/latest.xpi";
@@ -70,6 +88,7 @@ in
     "browser.tabs.groups.smart.enabled" = lock-false;
     "browser.tabs.groups.smart.optin" = lock-false;
     "browser.tabs.groups.smart.userEnabled" = lock-false;
+    "widget.use-xdg-desktop-portal.file-picker" = lock-true;
   };
 }
 

@@ -32,7 +32,7 @@ in
       nano = "vim";
       kwrite = "kate";
       ls = "eza";
-      encrypt = "sops --encrypt --in-place"
+      encrypt = "sops --encrypt --in-place";
     };
     oh-my-zsh = {
       enable = true;
