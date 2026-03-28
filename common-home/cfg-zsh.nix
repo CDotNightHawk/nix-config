@@ -13,7 +13,6 @@ in
 {
   programs.zsh = {
     enable = true;
-    enableDefaultConfig = false;
     dotDir = "${config.xdg.configHome}/zsh";
     history = {
       expireDuplicatesFirst = true;
