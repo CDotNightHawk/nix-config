@@ -24,6 +24,17 @@ in
     Fingerprinting = true;
     EmailTracking = true;
   };
+  FirefoxHome = {
+    SponsoredStories = false;
+    SponsoredTopSites = false;
+    Stories = false;
+  };
+  GenerativeAI = {
+      Enabled = false;
+  };
+  SearchEngines = {
+    "Remove": [ "Perplexity" ];
+  };
   DisplayBookmarksToolbar = "newtab";
   DontCheckDefaultBrowser = true;
   SearchBar = "unified";

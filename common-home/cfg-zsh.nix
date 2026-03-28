@@ -13,6 +13,7 @@ in
 {
   programs.zsh = {
     enable = true;
+    enableDefaultConfig = false;
     dotDir = "${config.xdg.configHome}/zsh";
     history = {
       expireDuplicatesFirst = true;
@@ -33,6 +34,7 @@ in
       kwrite = "kate";
       ls = "eza";
       encrypt = "sops --encrypt --in-place";
+      sudo = "doas";
     };
     oh-my-zsh = {
       enable = true;

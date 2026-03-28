@@ -26,6 +26,7 @@
     (common-nixos + /cfg-auto-optimise.nix)
     (common-nixos + /cfg-xdg.nix)
     (common-nixos + /cfg-zsh.nix)
+    (common-nixos + /cfg-security.nix)
     (common-nixos + /cfg-delete-old-hm-profiles.nix)
     ./hardware-configuration.nix
 
