@@ -67,5 +67,12 @@
   services.udev.extraRules = ''
     ATTR{address}=="6a:6f:b6:a5:0a:b2", NAME="eth0"
     ATTR{address}=="b6:b7:f7:65:57:31", NAME="eth1"
+    ACTION=="add|change", SUBSYSTEM=="net", KERNEL!="lo", RUN+="${pkgs.iw}/bin/iw dev %k set power_save off"
   '';
+
+  networking.networkmanager.settings = {
+    connection = {
+      "wifi.powersave" = 2;  # 0=default, 1=enable, 2=disable
+    };
+  };
 }

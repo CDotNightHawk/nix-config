@@ -10,33 +10,18 @@
 
   # === KERNEL MODULES ===
   boot.initrd.availableKernelModules = [
-    # Common modules from both configs
     "xhci_pci"
     "thunderbolt"
     "nvme"
     "uas"
-  ] ++ (lib.mkIf config.nixpkgs.hostPlatform.isIntel [
-    # Intel-specific modules 
-    "usbhid"
-    "i915"
-    "iwlwifi"
-  ]) ++ (lib.mkIf config.nixpkgs.hostPlatform.isAmd [
-    # AMD-specific modules 
     "sd_mod"
-  ]);
-
+  ];
+  
   boot.initrd.kernelModules = [ ];
-
-  # Set KVM module based on CPU
-  boot.kernelModules =
-    if config.nixpkgs.hostPlatform.isIntel then [ "kvm-intel" ]
-    else if config.nixpkgs.hostPlatform.isAmd then [ "kvm-amd" ]
-    else [ ];
-
+  boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
-  # Add AMD-specific modprobe config only on the AMD machine 
-  boot.extraModprobeConfig = lib.mkIf config.nixpkgs.hostPlatform.isAmd ''
+  boot.extraModprobeConfig = ''
     options mt7925e disable_aspm=1 disable_ps=1 fwlog_en=0
   '';
 
@@ -59,14 +44,8 @@
 
   swapDevices = [ ];
 
-  # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
-  # (the default) this is the recommended approach. When using systemd-networkd it's
-  # still possible to use this option, but it's recommended to use it in conjunction
-  # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.wlp1s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.intel.updateMicrocode = lib.mkIf config.nixpkgs.hostPlatform.isIntel (lib.mkDefault config.hardware.enableRedistributableFirmware);
-  hardware.cpu.amd.updateMicrocode = lib.mkIf config.nixpkgs.hostPlatform.isAmd (lib.mkDefault config.hardware.enableRedistributableFirmware);
+  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
