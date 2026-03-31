@@ -15,7 +15,7 @@
     inputs.sops-nix.homeManagerModules.sops
   ];
 
-  sops.defaultSopsFile = r.root + /framework/secrets/keys/git/github.yaml;
+  sops.defaultSopsFile = r.root + /secrets/keys/git/github.yaml;
   sops.age.keyFile = "/home/nighthawk/.config/sops/age/keys.txt";
   sops.secrets.github_ssh_key = {
     path = "${config.home.homeDirectory}/.ssh/id_github";
@@ -23,7 +23,7 @@
   };
   sops.secrets.github_token = {
     format = "yaml";
-    sopsFile = r.root + /framework/secrets/keys/git/github.yaml;
+    sopsFile = r.root + /secrets/keys/git/github.yaml;
   };
   programs.ssh = {
     enable = true;

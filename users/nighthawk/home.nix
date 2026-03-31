@@ -11,7 +11,7 @@
     inputs.sops-nix.homeManagerModules.sops
   ];
   
-  sops.defaultSopsFile = ../../framework/secrets/keys/git/github.yaml;
+  sops.defaultSopsFile = ../../secrets/keys/git/github.yaml;
 
   # 2. Point sops to your personal age key
   sops.age.keyFile = "/home/nighthawk/.config/sops/age/keys.txt";
@@ -25,8 +25,7 @@
   
   sops.secrets.github_token = {
     format = "yaml";
-    # can be also set per secret
-    sopsFile = ../../framework/secrets/keys/git/github.yaml;
+    sopsFile = ../../secrets/keys/git/github.yaml;
   };
 
   # 4. Configure SSH to use the new key
