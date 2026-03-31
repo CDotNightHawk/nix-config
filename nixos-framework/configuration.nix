@@ -45,11 +45,13 @@
   #};
 
   boot = {
+    loader.systemd-boot.enable = true;
+    loader.efi.canTouchEfiVariables = true;
+    
     extraModprobeConfig = ''
-    options mt7925e disable_aspm=1
+      options mt7925e disable_aspm=1
     '';
     tmp.cleanOnBoot = true;
-    # normally disabled by minimal.nix
     enableContainers = lib.mkForce true;
   };
 

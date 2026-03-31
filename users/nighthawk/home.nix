@@ -32,12 +32,11 @@
   # 4. Configure SSH to use the new key
   programs.ssh = {
     enable = true;
-    extraConfig = ''
-      Host github.com
-        User git
-        IdentityFile ${config.home.homeDirectory}/.ssh/id_github
-        IdentitiesOnly yes
-    '';
+    matchBlocks."github.com" = {
+      user = "git";
+      identityFile = "${config.home.homeDirectory}/.ssh/id_github";
+      identitiesOnly = true;
+    };
   };
 
   # Your personal packages. I moved all the GUI apps and user-specific

@@ -26,12 +26,12 @@
     sopsFile = r.root + /framework/secrets/keys/git/github.yaml;
   };
   programs.ssh = {
-    extraConfig = ''
-      Host github.com
-        User git
-        IdentityFile ${config.home.homeDirectory}/.ssh/id_github
-        IdentitiesOnly yes
-    '';
+    enable = true;
+    matchBlocks."github.com" = {
+      user = "git";
+      identityFile = "${config.home.homeDirectory}/.ssh/id_github";
+      identitiesOnly = true;
+    };
   };
 
   programs = {
