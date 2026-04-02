@@ -15,15 +15,12 @@
     "nvme"
     "uas"
     "sd_mod"
+    "iwlwifi" # Explicitly added for the Intel AX210
   ];
   
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
-
-  boot.extraModprobeConfig = ''
-    options mt7925e disable_aspm=1 disable_ps=1 fwlog_en=0
-  '';
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/46d48710-36ca-47d1-b5b0-b77e5b6c73d9";
