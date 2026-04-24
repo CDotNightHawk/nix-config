@@ -1,16 +1,21 @@
 # Inspired by https://codeberg.org/ihaveahax/nix-config
-{ config, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  me,
+  ...
+}:
 
 {
   services.syncthing = {
     enable = true;
-    user = "nighthawk";
-    dataDir = "/home/nighthawk";
+    user = me;
+    dataDir = config.users.users.${me}.home;
     openDefaultPorts = true;
   };
 
   networking.firewall.allowedTCPPorts = [ 8384 ];
 
-  # maybe this is a bad idea?
-  users.users.nighthawk.extraGroups = [ "syncthing" ];
+  users.users.${me}.extraGroups = [ "syncthing" ];
 }

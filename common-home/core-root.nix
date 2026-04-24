@@ -13,10 +13,10 @@
   ];
 
   home.packages = with pkgs; [
-    htop      # Interactive process viewer
-    ncdu      # Disk usage analyzer
-    tcpdump   # Network packet analyzer
-    lsof      # List open files
+    htop # Interactive process viewer
+    ncdu # Disk usage analyzer
+    tcpdump # Network packet analyzer
+    lsof # List open files
   ];
 
   programs = {
@@ -33,10 +33,10 @@
       };
 
       # distinct red prompt for root to prevent accidents
-      initExtra = ''
+      initContent = ''
         # Set local color to Red
         export LOCALCOLOR=$'%{\e[1;31m%}'
-        
+
         # Manually enforce the prompt format with the new color
         # (Overrides the default green/stock setup from shared-zsh-settings.nix)
         PS1=$'[''${LOCALCOLOR}%n@%m%{\e[0m%} %d]\n# '

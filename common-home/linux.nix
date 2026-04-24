@@ -25,8 +25,8 @@
     wl-clipboard
 
     # System monitoring tools useful specifically on Linux
-    sysstat       # iostat, mpstat, pidstat
-    lm_sensors    # check cpu temperatures
+    sysstat # iostat, mpstat, pidstat
+    lm_sensors # check cpu temperatures
   ];
   systemd.user.startServices = "sd-switch";
 }

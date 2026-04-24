@@ -7,26 +7,24 @@
 }:
 
 {
-  # Enable sound with pipewire.
-  services.pulseaudio.enable = false; # Disable legacy PulseAudio
-  security.rtkit.enable = true; # Enable real-time audio permissions
+  # Disable legacy PulseAudio in favor of PipeWire.
+  services.pulseaudio.enable = false;
+
+  # Real-time scheduling for audio threads.
+  security.rtkit.enable = true;
+
   services.pipewire = {
     enable = true;
-    alsa.enable = true; # Advanced Linux Sound Architecture (ALSA) provides audio and MIDI functionality
+    alsa.enable = true;
     alsa.support32Bit = true;
-    pulse.enable = true; # Enables the pipewire-pulse replacement server
-
-    # JACK support for advanced routing and virtual machines
+    pulse.enable = true;
     jack.enable = true;
-
-    # Using wireplumber instead
-    media-session.enable = false;
+    wireplumber.enable = true;
   };
-  services.wireplumber.enable = true;
-  home.packages = with pkgs; [
-    qpwgraph # A PipeWire Graph Qt GUI Interface
-    
-    pavucontrol # Default Pipewire GUI
-    easyeffects # Plugins for PipeWire applications 
+
+  environment.systemPackages = with pkgs; [
+    pavucontrol
+    qpwgraph
+    easyeffects
   ];
 }

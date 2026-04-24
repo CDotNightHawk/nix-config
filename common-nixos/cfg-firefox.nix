@@ -16,9 +16,8 @@
       # note: plasma6 adds itself here
       keepassxc
     ];
-    preferences = {
-      "widget.use-xdg-desktop-portal.file-picker" = 1;
-    };
+    # preferences are all pushed via policies.Preferences below so we
+    # don't end up defining the same key in two places.
     policies = import (r.extras + /firefox-policies.nix);
     #package = pkgs.firefox-esr-128;
   };

@@ -1,4 +1,4 @@
-# Inspired by https://codeberg.org/ihaveahax/nix-config
+# Home-manager side of the framework host.
 {
   config,
   lib,
@@ -12,40 +12,19 @@
   imports = with r; [
     (common-home + /linux.nix)
     (common-home + /core.nix)
-    inputs.sops-nix.homeManagerModules.sops
+    (common-home + /cfg-sops.nix)
   ];
-
-  sops.defaultSopsFile = r.root + /secrets/keys/git/github.yaml;
-  sops.age.keyFile = "/home/nighthawk/.config/sops/age/keys.txt";
-  sops.secrets.github_ssh_key = {
-    path = "${config.home.homeDirectory}/.ssh/id_github";
-    mode = "0400";
-  };
-  sops.secrets.github_token = {
-    format = "yaml";
-    sopsFile = r.root + /secrets/keys/git/github.yaml;
-  };
-  programs.ssh = {
-    enable = true;
-    matchBlocks."github.com" = {
-      user = "git";
-      identityFile = "${config.home.homeDirectory}/.ssh/id_github";
-      identitiesOnly = true;
-    };
-  };
 
   programs = {
     man.enable = false;
     nix-index.enable = lib.mkForce false;
-    zsh = {
-      initContent = ''
-        ######################################################################
-        # begin nixos-framework/home.nix
+    zsh.initContent = ''
+      ######################################################################
+      # begin nixos-framework/home.nix
 
-        LOCALCOLOR=$'%{\e[1;32m%}'
+      LOCALCOLOR=$'%{\e[1;32m%}'
 
-        # end nixos-framework/home.nix
-      '';
-    };
+      # end nixos-framework/home.nix
+    '';
   };
 }

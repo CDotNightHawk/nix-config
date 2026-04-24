@@ -30,21 +30,21 @@ in
     Stories = false;
   };
   GenerativeAI = {
-      Enabled = false;
+    Enabled = false;
   };
   SearchEngines = {
-    "Remove": [ "Perplexity" ];
+    Remove = [ "Perplexity" ];
   };
   DisplayBookmarksToolbar = "newtab";
   DontCheckDefaultBrowser = true;
   SearchBar = "unified";
   DNSOverHTTPS = {
-    Enabled =  true;
-    ProviderURL = "1.1.1.1",
-    "Locked": true | false;
-    "ExcludedDomains": ["kennesaw.edu"];
-    "Fallback": true;
-  }
+    Enabled = true;
+    ProviderURL = "https://1.1.1.1/dns-query";
+    Locked = true;
+    ExcludedDomains = [ "kennesaw.edu" ];
+    Fallback = true;
+  };
 
   UserMessaging = {
     ExtensionRecommendations = false;
@@ -102,4 +102,3 @@ in
     "widget.use-xdg-desktop-portal.file-picker" = lock-true;
   };
 }
-
