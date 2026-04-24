@@ -22,7 +22,7 @@ in
   # zshenv
   # NixOS: programs.zsh.shellInit
   # Home Manager: programs.zsh.envExtra
-  shellInit = '''';
+  shellInit = "";
 
   # zshrc
   # NixOS: programs.zsh.interactiveShellInit

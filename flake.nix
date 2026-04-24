@@ -13,18 +13,18 @@
   };
 
   inputs = {
-    nixos-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixos-unstable.url = "git+https://github.com/NixOS/nixpkgs?ref=nixos-unstable";
 
     home-manager = {
-      url = "github:nix-community/home-manager/master";
+      url = "git+https://github.com/nix-community/home-manager?ref=master";
       inputs.nixpkgs.follows = "nixos-unstable";
     };
     treefmt-nix = {
-      url = "github:numtide/treefmt-nix";
+      url = "git+https://github.com/numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixos-unstable";
     };
     sops-nix = {
-      url = "github:Mic92/sops-nix";
+      url = "git+https://github.com/Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixos-unstable";
     };
     lanzaboote = {
@@ -46,6 +46,40 @@
       inputs.nixpkgs.follows = "nixos-unstable";
       inputs.lix.follows = "lix";
     };
+
+    # Declarative disk partitioning (used by the workstation host).
+    disko = {
+      url = "git+https://github.com/nix-community/disko";
+      inputs.nixpkgs.follows = "nixos-unstable";
+    };
+
+    # niri Wayland compositor + Nix-typed config.
+    niri = {
+      url = "git+https://github.com/sodiboo/niri-flake";
+      inputs.nixpkgs.follows = "nixos-unstable";
+    };
+
+    # DankMaterialShell (QuickShell-based niri shell from danklinux.com).
+    dms = {
+      url = "git+https://github.com/AvengeMedia/DankMaterialShell?ref=stable";
+      inputs.nixpkgs.follows = "nixos-unstable";
+    };
+
+    # dgop is the system-monitor backend DMS uses. It's only in
+    # nixpkgs >= 26.05; on the pinned `nixos-unstable` it isn't
+    # available yet, so we fetch it from upstream.
+    dgop = {
+      url = "git+https://github.com/AvengeMedia/dgop";
+      inputs.nixpkgs.follows = "nixos-unstable";
+    };
+
+    # NixVim: declarative Neovim config that fails at flake-check time
+    # if the config is wrong. Way more pleasant than reading raw .lua
+    # error messages on first boot.
+    nixvim = {
+      url = "git+https://github.com/nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixos-unstable";
+    };
   };
 
   outputs =
@@ -59,6 +93,12 @@
       lix,
       lix-module,
       sops-nix,
+      disko,
+      niri,
+      dms,
+      dgop,
+      nixvim,
+      ...
     }:
     let
       r = {
@@ -102,6 +142,18 @@
             inherit system;
             specialArgs = mkSpecialArgs me system;
             modules = [ ./nixos-framework/configuration.nix ];
+          }
+        );
+
+        "workstation" = nixos-unstable.lib.nixosSystem (
+          let
+            me = "nighthawk";
+            system = "x86_64-linux";
+          in
+          {
+            inherit system;
+            specialArgs = mkSpecialArgs me system;
+            modules = [ ./nixos-workstation/configuration.nix ];
           }
         );
       };

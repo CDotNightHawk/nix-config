@@ -29,3 +29,9 @@ jobs:
           nix eval \
             .#nixosConfigurations.framework.config.system.build.toplevel.drvPath \
             --raw --show-trace
+
+      - name: Evaluate workstation toplevel
+        run: |
+          nix eval \
+            .#nixosConfigurations.workstation.config.system.build.toplevel.drvPath \
+            --raw --show-trace

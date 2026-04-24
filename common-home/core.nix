@@ -9,7 +9,7 @@
 
 {
   imports = [
-    ./cfg-neovim.nix
+    # Neovim is now provided by ./cfg-nixvim.nix, imported per host.
     ./cfg-zsh.nix
     ./cfg-git.nix
     ./cfg-ssh.nix

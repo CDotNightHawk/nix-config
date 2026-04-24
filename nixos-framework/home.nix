@@ -13,6 +13,9 @@
     (common-home + /linux.nix)
     (common-home + /core.nix)
     (common-home + /cfg-sops.nix)
+    (common-home + /cfg-niri-dms.nix)
+    (common-home + /cfg-nixvim.nix)
+    (common-home + /cfg-devops.nix)
   ];
 
   programs = {

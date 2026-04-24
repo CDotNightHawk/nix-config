@@ -36,8 +36,10 @@
     (common-nixos + /cfg-delete-old-hm-profiles.nix)
     (common-nixos + /cfg-time-and-i18n.nix)
 
-    # Desktop / laptop essentials
-    (common-nixos + /cfg-plasma6.nix)
+    # Niri + DMS + ly stack (replaces Plasma 6 / SDDM)
+    (common-nixos + /cfg-niri.nix)
+    (common-nixos + /cfg-dms.nix)
+    (common-nixos + /cfg-display-manager-ly.nix)
     (common-nixos + /cfg-sound.nix)
     (common-nixos + /cfg-firefox.nix)
 
@@ -58,6 +60,10 @@
     inputs.lix-module.nixosModules.default
     inputs.sops-nix.nixosModules.sops
   ];
+
+  # Use the latest mainline kernel — Framework 13 AMD benefits from
+  # newer amdgpu / amd-pstate / fingerprint drivers.
+  nighthawk.kernel = "latest";
 
   # --- Boot ---------------------------------------------------------------
   boot = {
@@ -141,8 +147,10 @@
       LOCALCOLOR=$'%{\e[1;32m%}'
     '';
     tmux.enable = true;
-    # `light` + `video` group gives unprivileged brightness control.
-    light.enable = true;
+    # Brightness keys: brightnessctl is installed system-wide via
+    # cfg-niri.nix, and `services.udev.extraRules` (or membership in
+    # the `video` group) lets unprivileged users adjust the backlight.
+    # The legacy `programs.light` was removed from nixpkgs upstream.
   };
 
   users.users.${me}.extraGroups = [
