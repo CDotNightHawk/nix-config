@@ -101,17 +101,36 @@
       ...
     }:
     let
+      # Path-record. Use this in module imports so paths are anchored
+      # to the flake root regardless of which subdir a module lives in.
+      # NB: do NOT name a field `lib` — module function
+      # args expose `lib = nixpkgs.lib`, and `with r;` can't shadow
+      # function arguments, so `r.lib` would be unreachable inside a
+      # module body.
       r = {
         root = ./.;
-        common-nixos = ./common-nixos;
-        common-home = ./common-home;
-        extras = ./extras;
+        hosts = ./hosts;
+        modulesNixos = ./modules/nixos;
+        modulesHome = ./modules/home;
+        libs = ./lib;
+        secrets = ./secrets;
       };
+      mkHost =
+        hostname:
+        let
+          me = "nighthawk";
+          system = "x86_64-linux";
+        in
+        nixos-unstable.lib.nixosSystem {
+          inherit system;
+          specialArgs = mkSpecialArgs me system;
+          modules = [ (./hosts + "/${hostname}") ];
+        };
       mkSpecialArgs = (
         me: system: {
           inherit me inputs r;
           my-inputs = {
-            # putting this in cfg-home-manager.nix causes an infinite recursion error
+            # putting this in modules/nixos/home-manager.nix causes an infinite recursion error
             home-manager-module = home-manager.nixosModules.home-manager;
             night-nur = night-nur.outputs.packages.${system};
           };
@@ -133,29 +152,8 @@
     in
     {
       nixosConfigurations = {
-        "framework" = nixos-unstable.lib.nixosSystem (
-          let
-            me = "nighthawk";
-            system = "x86_64-linux";
-          in
-          {
-            inherit system;
-            specialArgs = mkSpecialArgs me system;
-            modules = [ ./nixos-framework/configuration.nix ];
-          }
-        );
-
-        "workstation" = nixos-unstable.lib.nixosSystem (
-          let
-            me = "nighthawk";
-            system = "x86_64-linux";
-          in
-          {
-            inherit system;
-            specialArgs = mkSpecialArgs me system;
-            modules = [ ./nixos-workstation/configuration.nix ];
-          }
-        );
+        framework = mkHost "framework";
+        workstation = mkHost "workstation";
       };
 
       devShells.x86_64-linux.default = import ./shell.nix {
