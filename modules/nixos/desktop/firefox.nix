@@ -15,7 +15,6 @@
     nativeMessagingHosts.packages = with pkgs; [
       # note: plasma6 adds itself here
       keepassxc
-      bitwarden-desktop
     ];
     # preferences are all pushed via policies.Preferences below so we
     # don't end up defining the same key in two places.
