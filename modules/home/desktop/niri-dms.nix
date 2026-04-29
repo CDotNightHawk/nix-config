@@ -152,6 +152,36 @@
       "Mod+Print".action = spawn "niri" "msg" "action" "screenshot-screen";
       "Mod+Shift+Print".action = spawn "niri" "msg" "action" "screenshot-window";
 
+      # --- Admin / system keybinds -----------------------------------
+      # All of these run inside a kitty terminal so you can read the
+      # output. doas is configured (modules/nixos/security.nix) to
+      # remember your password for ~5min and to skip prompts entirely
+      # for read-only commands like `journalctl`.
+ 
+      # Mod+Shift+R: rebuild the system from the current flake checkout.
+      # Uses `boot` not `switch` so a bad build doesn't kick you out of
+      # the live session — reboot to land on the new generation.
+      "Mod+Shift+R".action = spawn "kitty" "--hold" "--" "sh" "-c"
+        "cd ~/nix-config && doas nixos-rebuild boot --flake \".#$(hostname)\"";
+ 
+      # Mod+Shift+U: bump flake inputs *and* rebuild. Counterpart to
+      # the weekly auto-upgrade timer for when you want a fresh
+      # nixpkgs right now.
+      "Mod+Shift+U".action = spawn "kitty" "--hold" "--" "sh" "-c"
+        "cd ~/nix-config && nix flake update && doas nixos-rebuild boot --flake \".#$(hostname)\"";
+ 
+      # Mod+Shift+L: lock screen (swayidle also auto-locks after 5 min).
+      "Mod+Shift+L".action = spawn "swaylock" "-f";
+ 
+      # Mod+Shift+G: garbage-collect old generations >14 days. Fire and
+      # forget; doas is passwordless for this command (see security.nix).
+      "Mod+Shift+G".action = spawn "kitty" "--hold" "--" "sh" "-c"
+        "doas nix-collect-garbage --delete-older-than 14d && doas nix-store --optimise";
+ 
+      # Mod+Shift+P: power menu via fuzzel. Pick suspend/reboot/poweroff/
+      # logout/lock from a dmenu-style picker.
+      "Mod+Shift+P".action = spawn "${powerMenu}/bin/power-menu";
+
       # Note: DMS' preset niri keybinds already cover the XF86
       # brightness / audio / media keys via its own osd. Adding our
       # own bindings here would clash with the DMS preset and refuse
