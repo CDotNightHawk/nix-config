@@ -73,16 +73,23 @@
     };
   };
 
-  # Flatpak ships its own .desktop files into
-  # /var/lib/flatpak/exports/share, but only if XDG_DATA_DIRS picks
-  # them up. Make sure the dir is on the system search path so DMS'
-  # launcher / fuzzel see flatpak apps.
-  environment.sessionVariables = {
-    XDG_DATA_DIRS = [
-      "/var/lib/flatpak/exports/share"
-      "$HOME/.local/share/flatpak/exports/share"
-    ];
-  };
+  # NB: do *not* set environment.sessionVariables.XDG_DATA_DIRS here.
+  # NixOS' core shells-environment module computes XDG_DATA_DIRS from
+  # `environment.profileRelativeSessionVariables` (default `[ "/share" ]`),
+  # which expands to /run/current-system/sw/share + per-profile share
+  # dirs — that's where every Nix-installed `.desktop` file lives.
+  # Setting `environment.sessionVariables.XDG_DATA_DIRS = [...]` would
+  # override that list (sessionVariables wins over profileRelative when
+  # the same key is in both), wiping out launcher/icon/MIME discovery
+  # for non-flatpak apps.
+  #
+  # The upstream `services.flatpak` NixOS module already does the
+  # right thing: it adds `/var/lib/flatpak/exports` and
+  # `$HOME/.local/share/flatpak/exports` to `environment.profiles`,
+  # which (via profileRelativeSessionVariables) gets `.../share`
+  # appended onto XDG_DATA_DIRS automatically. So flatpak `.desktop`
+  # files show up in DMS' launcher / fuzzel without us touching env
+  # vars.
 
   # Flatpaks need xdg-desktop-portal to talk to the host (file picker,
   # screenshot, etc.). The niri module already enables xdg-portal +
