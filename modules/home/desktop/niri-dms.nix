@@ -85,11 +85,11 @@ in
       layout = "us";
     };
 
-    extraConfig = ''
-      include "~/.config/niri/dms/cursor.kdl"
-      include "~/.config/niri/dms/outputs.kdl"
-      include "~/.config/niri/dms/windowrules.kdl"
-    '';
+    #extraConfig = ''
+    #  include "~/.config/niri/dms/cursor.kdl"
+    #  include "~/.config/niri/dms/outputs.kdl"
+    #  include "~/.config/niri/dms/windowrules.kdl"
+    #'';
 
     input.touchpad = {
       tap = true;
