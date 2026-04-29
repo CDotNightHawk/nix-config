@@ -68,6 +68,10 @@
     pywalfox-native
     zed-editor
     vscode
+    termius
+    orca-slicer
+    freecad
+    feishin
     bitwarden-desktop
   ];
 
