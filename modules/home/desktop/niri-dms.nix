@@ -22,9 +22,24 @@
     enable = true;
     enableSystemMonitoring = true;
     dgop.package = inputs.dgop.packages.${pkgs.system}.default;
+
+    # Run DMS as a systemd user unit bound to graphical-session.target.
+    # This gets DMS' own System Check ("dms.service: enabled-runtime,
+    # inactive") to go green, gives us proper restart semantics
+    # (Restart=on-failure), and means killing/restarting dms doesn't
+    # require dropping the whole niri session.
+    systemd.enable = true;
+
     niri = {
       enableKeybinds = true;
-      enableSpawn = true;
+      # We *don't* want enableSpawn here. enableSpawn injects
+      #   spawn-at-startup "dms" "run"
+      # into niri's KDL, which races with systemd starting dms.service:
+      # niri launches dms manually, the systemd unit stays in
+      # "enabled-runtime, inactive" forever, and DMS' System Check
+      # complains. Letting graphical-session.target pull dms.service in
+      # is the supported path.
+      enableSpawn = false;
       # By default DMS rewrites ~/.config/niri/config.kdl to
       # `include "dms/{alttab,binds,colors,layout,outputs,wpblur}.kdl"`,
       # but those `dms/*.kdl` files are only written at runtime by the
