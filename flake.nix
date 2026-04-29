@@ -120,7 +120,7 @@
         secrets = ./secrets;
       };
       mkHost =
-        hostname:
+        hostPath:
         let
           me = "nighthawk";
           system = "x86_64-linux";
@@ -128,7 +128,7 @@
         nixos-unstable.lib.nixosSystem {
           inherit system;
           specialArgs = mkSpecialArgs me system;
-          modules = [ (./hosts + "/${hostname}") ];
+          modules = [ hostPath ];
         };
       mkSpecialArgs = (
         me: system: {
@@ -156,8 +156,8 @@
     in
     {
       nixosConfigurations = {
-        framework = mkHost "framework";
-        workstation = mkHost "workstation";
+        framework = mkHost ./hosts/framework;
+        workstation = mkHost ./hosts/workstation;
       };
 
       devShells.x86_64-linux.default = import ./shell.nix {

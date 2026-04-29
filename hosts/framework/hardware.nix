@@ -9,23 +9,11 @@
 }:
 
 {
-  # BTRFS on NVMe: zstd compression + noatime is the current community
-  # consensus for Framework 13 laptops. Reduces writes and gives a
-  # measurable space win with negligible CPU cost on Zen4.
-  fileSystems."/" = {
-    options = lib.mkForce [
-      "subvol=@"
-      "compress=zstd"
-      "noatime"
-    ];
-  };
-
-  fileSystems."/home" = {
-    options = lib.mkForce [
-      "compress=zstd"
-      "noatime"
-    ];
-  };
+  # NOTE: do not declare `fileSystems.<mp>` here as a partial override
+  # ({ options = ...; } only). nixpkgs 26.05 made `fsType` mandatory
+  # (no default), so any partial override risks colliding with module
+  # merging on stricter evaluators. Put all fileSystems fields together
+  # in hardware-configuration.nix.
 
   # AMD microcode updates come via linux-firmware; this is already
   # defaulted via hardware.enableRedistributableFirmware, but pinning
