@@ -18,8 +18,12 @@
   ...
 }:
 {
+  # Enable U2F Authentication
+  security.pam.u2f.enable = true;
+  environment.systemPackages = [ pkgs.pam_u2f ];
+
   security.sudo.enable = false;
- 
+
   security.doas = {
     enable = true;
     extraRules = [
@@ -38,7 +42,7 @@
         keepEnv = true;
         cmd = "nh";
       }
- 
+
       # Read-only diagnostics — passwordless. These can't break a
       # running system; making them prompt for a password is pure
       # friction.
@@ -65,7 +69,7 @@
         cmd = "${pkgs.systemd}/bin/systemctl";
         args = [ "list-units" ];
       }
- 
+
       # nix-* maintenance. nix-collect-garbage and nix-store --optimise
       # only delete unreferenced store paths and dedup files; they
       # cannot brick the system.

@@ -64,6 +64,10 @@
     cachix
     nix-tree
     rsync
+    ghostty
+    pywalfox-native
+    zed-editor
+    vscode
   ];
 
   home.sessionVariables = with config.xdg; {

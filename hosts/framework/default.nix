@@ -30,6 +30,8 @@
     (modulesNixos + /nix.nix)
     (modulesNixos + /users.nix)
     (modulesNixos + /auto-optimise.nix)
+    (modulesNixos + /auto-upgrade.nix)
+    (modulesNixos + /polkit-rules.nix)
     (modulesNixos + /xdg.nix)
     (modulesNixos + /zsh.nix)
     (modulesNixos + /shell-aliases.nix)
