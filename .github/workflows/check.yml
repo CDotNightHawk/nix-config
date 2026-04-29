@@ -35,3 +35,16 @@ jobs:
           nix eval \
             .#nixosConfigurations.workstation.config.system.build.toplevel.drvPath \
             --raw --show-trace
+
+      # Real build of lix itself. `nix flake check --no-build` only
+      # checks evaluation; it doesn't notice that the pinned lix source
+      # fails to compile on the current toolchain. Building the lix
+      # package (or fetching it from cache.lix.systems) catches that
+      # before a user does `nixos-rebuild switch`.
+      - name: Build framework lix
+        run: |
+          nix build \
+            --extra-substituters https://cache.lix.systems \
+            --extra-trusted-public-keys 'cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o=' \
+            --no-link --print-out-paths --show-trace \
+            '.#nixosConfigurations.framework.config.nix.package'

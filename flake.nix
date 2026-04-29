@@ -6,9 +6,13 @@
   nixConfig = {
     extra-substituters = [
       "https://nighthawk.cachix.org"
+      # Lix's binary cache. Without this the lix-module input forces a
+      # ~10-minute clang/ninja build of Lix on every fresh machine.
+      "https://cache.lix.systems"
     ];
     extra-trusted-public-keys = [
       "nighthawk.cachix.org-1:+Ppa/mjYFZFhMz95oSQNRJo+J9koACCy/4GtcautuYc="
+      "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o="
     ];
   };
 
@@ -116,7 +120,7 @@
         secrets = ./secrets;
       };
       mkHost =
-        hostname:
+        hostPath:
         let
           me = "nighthawk";
           system = "x86_64-linux";
@@ -124,7 +128,7 @@
         nixos-unstable.lib.nixosSystem {
           inherit system;
           specialArgs = mkSpecialArgs me system;
-          modules = [ (./hosts + "/${hostname}") ];
+          modules = [ hostPath ];
         };
       mkSpecialArgs = (
         me: system: {
@@ -152,8 +156,8 @@
     in
     {
       nixosConfigurations = {
-        framework = mkHost "framework";
-        workstation = mkHost "workstation";
+        framework = mkHost ./hosts/framework;
+        workstation = mkHost ./hosts/workstation;
       };
 
       devShells.x86_64-linux.default = import ./shell.nix {

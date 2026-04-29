@@ -10,7 +10,7 @@ NightHawk's NixOS + home-manager flake.
 | `workstation` | Intel i9 11th gen + AMD RX 9070 XT, niri + DMS + ly        | `hosts/workstation/default.nix` |
 
 Add a host: drop a directory under `hosts/<name>/` with a `default.nix`,
-and add `<name> = mkHost "<name>";` in `flake.nix`.
+and add `<name> = mkHost ./hosts/<name>;` in `flake.nix`.
 
 ## Layout
 
