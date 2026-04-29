@@ -49,6 +49,10 @@
     (modulesNixos + /desktop/sound.nix)
     (modulesNixos + /desktop/firefox.nix)
 
+    # gnome-keyring as Secret Service provider — fixes VSCode /
+    # Firefox / gh CLI falling back to "basic text encoding".
+    (modulesNixos + /desktop/keyring.nix)
+
     # Steam + gamescope + gamemode + Proton-GE.
     (modulesNixos + /apps/steam.nix)
 
