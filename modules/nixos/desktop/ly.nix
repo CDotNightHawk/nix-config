@@ -17,6 +17,17 @@
   services.displayManager.ly = {
     enable = true;
     settings = {
+      # Move ly off tty1 (nixpkgs default) onto tty7, the long-standing
+      # convention for graphical sessions. Two reasons:
+      #   - tty1 stays available for an actual console login, which is
+      #     critical when you're debugging a half-broken rebuild and
+      #     can't start a Wayland session.
+      #   - `nixos-rebuild switch` reloads dbus.service. If ly is on the
+      #     active VT, that reload kills the greeter and any in-progress
+      #     login. Parking ly on tty7 means the rebuild's dbus reload
+      #     doesn't take down whatever console you're currently on.
+      tty = lib.mkForce 7;
+
       animate = true;
       animation = "matrix";
       hide_borders = true;
@@ -31,7 +42,7 @@
     };
   };
 
-  # Don't run a graphical greeter on tty1; ly defaults to tty2.
-  # If you need ctrl-alt-F2 for ly and ctrl-alt-F1 for a console,
-  # this is already correct.
+  # Make sure agetty keeps tty1 free for a console login. NixOS does
+  # this by default, but if some other module (e.g. an old SDDM leftover)
+  # tries to grab tty1 for the greeter, this assert flushes it out.
 }

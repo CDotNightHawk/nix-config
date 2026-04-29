@@ -57,9 +57,13 @@ in
       installation_mode = "force_installed";
       private_browsing = true;
     };
+    # Plasma Integration was force-installed when this config still
+    # shipped Plasma 6 as the desktop. We're on niri now, so the
+    # extension has nothing to talk to and just shows a broken icon
+    # in the toolbar — block it instead so Firefox unpins it on next
+    # restart.
     "plasma-browser-integration@kde.org" = {
-      install_url = "https://addons.mozilla.org/firefox/downloads/latest/plasma-integration/latest.xpi";
-      installation_mode = "force_installed";
+      installation_mode = "blocked";
     };
     "keepassxc-browser@keepassxc.org" = {
       install_url = "https://addons.mozilla.org/firefox/downloads/latest/keepassxc-browser/latest.xpi";

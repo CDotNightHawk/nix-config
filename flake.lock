@@ -77,6 +77,26 @@
         "url": "https://github.com/AvengeMedia/DankMaterialShell"
       }
     },
+    "dsearch": {
+      "inputs": {
+        "nixpkgs": [
+          "nixos-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1777084764,
+        "narHash": "sha256-qSwgvkWSh8Er0TfeYfDxVC5J6ClE1ehu0wf3sxhI6xk=",
+        "ref": "refs/heads/master",
+        "rev": "18591ecaa4b87acb222391f9aedd2fbbef9c087f",
+        "revCount": 60,
+        "type": "git",
+        "url": "https://github.com/AvengeMedia/danksearch"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/AvengeMedia/danksearch"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -485,6 +505,7 @@
         "dgop": "dgop",
         "disko": "disko",
         "dms": "dms",
+        "dsearch": "dsearch",
         "home-manager": "home-manager",
         "lanzaboote": "lanzaboote",
         "lix": "lix",

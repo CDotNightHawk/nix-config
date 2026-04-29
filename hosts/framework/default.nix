@@ -43,6 +43,14 @@
     (modulesNixos + /desktop/sound.nix)
     (modulesNixos + /desktop/firefox.nix)
 
+    # Sway as a Wayland fallback session — gives ly a second
+    # `wayland-sessions/*.desktop` to offer, so if niri ever breaks
+    # we still have a working compositor to log into.
+    (modulesNixos + /desktop/sway.nix)
+
+    # CUPS + cups-pk-helper + driver bundles + mDNS printer discovery.
+    (modulesNixos + /services/printing.nix)
+
     # Security: doas only.
     (modulesNixos + /security.nix)
 
