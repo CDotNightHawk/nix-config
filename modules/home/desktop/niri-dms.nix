@@ -16,7 +16,16 @@
   imports = [
     inputs.dms.homeModules.dank-material-shell
     inputs.dms.homeModules.niri
+    inputs.dsearch.homeModules.dsearch
   ];
+
+  # dsearch (a.k.a. danksearch) — bleve-backed file index used by DMS'
+  # launcher for the "search files" panel. The home module provides the
+  # dsearch.service systemd unit; turning it on makes DMS' System Check
+  # stop flagging "danksearch: Not installed".
+  programs.dsearch = {
+    enable = true;
+  };
 
   programs.dank-material-shell = {
     enable = true;

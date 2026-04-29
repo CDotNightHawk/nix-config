@@ -77,6 +77,14 @@
       inputs.nixpkgs.follows = "nixos-unstable";
     };
 
+    # dsearch (a.k.a. danksearch): bleve-backed file index DMS' launcher
+    # uses for the file-search panel. Without this DMS' System Check
+    # flags it as "Not installed".
+    dsearch = {
+      url = "git+https://github.com/AvengeMedia/danksearch";
+      inputs.nixpkgs.follows = "nixos-unstable";
+    };
+
     # NixVim: declarative Neovim config that fails at flake-check time
     # if the config is wrong. Way more pleasant than reading raw .lua
     # error messages on first boot.
