@@ -9,11 +9,14 @@
 {
   nix = {
     package = lib.mkDefault pkgs.nix;
-    
+
     settings = {
       netrc-file = lib.mkForce "${config.home.homeDirectory}/.config/nix/netrc";
       auto-optimise-store = true;
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
     };
 
     # Clean up old generations automatically

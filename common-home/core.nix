@@ -71,7 +71,8 @@
     MANPAGER = "nvim +Man!";
   };
 
-  nixpkgs.config.allowUnfree = true;
+  # Note: allowUnfree is set once at the system level via
+  # extras/shared-nix-settings.nix.
 
   home.stateVersion = "24.05"; # Please read the comment before changing.
 }

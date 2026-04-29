@@ -1,0 +1,31 @@
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  flake-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v14
+        with:
+          extra-conf: |
+            accept-flake-config = true
+
+      - name: Cache nix store
+        uses: DeterminateSystems/magic-nix-cache-action@v8
+
+      - name: nix flake check (no build)
+        run: nix flake check --no-build --show-trace
+
+      - name: Evaluate framework toplevel
+        run: |
+          nix eval \
+            .#nixosConfigurations.framework.config.system.build.toplevel.drvPath \
+            --raw --show-trace

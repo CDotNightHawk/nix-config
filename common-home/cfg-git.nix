@@ -7,8 +7,6 @@ in
 {
   programs.git = {
     enable = true;
-    userEmail = "nighthawk@nanofox.dev";
-    userName = "nighthawk";
     ignores = [
       # Python
       "__pycache__/"
@@ -64,22 +62,15 @@ in
       ".stversions"
     ];
     lfs.enable = true;
-    extraConfig = {
-      # taken from my mac gitconfig
-      push = {
-        default = "current";
+    settings = {
+      user = {
+        email = "nighthawk@nanofox.dev";
+        name = "nighthawk";
       };
-      pull = {
-        rebase = false;
-      };
-      init = {
-        defaultBranch = "main";
-      };
-      gpg = {
-        ssh = {
-          allowedSignersFile = allowedSignersPath;
-        };
-      };
+      push.default = "current";
+      pull.rebase = false;
+      init.defaultBranch = "main";
+      gpg.ssh.allowedSignersFile = allowedSignersPath;
     };
     signing = {
       format = "ssh";

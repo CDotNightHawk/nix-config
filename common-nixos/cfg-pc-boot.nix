@@ -33,7 +33,10 @@
         })
       ];
       theme = "dragon";
-    }
-    kernelParams = [ "quiet" "splash" ];
+    };
+    kernelParams = [
+      "quiet"
+      "splash"
+    ];
   };
 }

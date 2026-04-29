@@ -1,6 +1,11 @@
 # custom-folder-icons.nix
 
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   cfg = config.customFolderIcons;
@@ -21,7 +26,10 @@ in
     enable = lib.mkEnableOption "Enable custom folder icons";
 
     desktopEnvironment = lib.mkOption {
-      type = lib.types.enum [ "gnome" "kde" ];
+      type = lib.types.enum [
+        "gnome"
+        "kde"
+      ];
       default = "gnome";
       description = "The desktop environment to apply folder icons for.";
     };
@@ -34,7 +42,7 @@ in
 
     folderMap = lib.mkOption {
       type = lib.types.attrsOf lib.types.str;
-      default = {};
+      default = { };
       description = "An attribute set mapping folder paths to icon file names.";
       example = {
         "~/Documents" = "documents.svg";
@@ -67,7 +75,8 @@ in
       setFolderIcons = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         echo "Setting custom folder icons..."
         ${lib.concatStringsSep "\n" (
-          lib.mapAttrsToList (folderPath: iconName:
+          lib.mapAttrsToList (
+            folderPath: iconName:
             let
               # Resolve ~ to the home directory for the activation script
               resolvedPath = lib.replaceStrings [ "~" ] [ config.home.homeDirectory ] folderPath;

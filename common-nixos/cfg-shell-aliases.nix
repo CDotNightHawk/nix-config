@@ -9,7 +9,7 @@
 {
   environment.systemPackages = [
     (pkgs.writeShellScriptBin "nrvl" ''
-      exec ${config.system.build.nixos-rebuild}/bin/nixos-rebuild -v -L "$@"
+      exec nixos-rebuild -v -L "$@"
     '')
   ];
 }
