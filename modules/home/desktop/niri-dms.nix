@@ -124,7 +124,15 @@ in
     prefer-no-csd = true;
     hotkey-overlay.skip-at-startup = true;
 
-    # Spawn a clipboard manager + idle handler at session start.
+    # Session-wide env vars. DISPLAY=:0 tells X11 clients where the
+    # xwayland-satellite socket lives; xwayland-satellite is
+    # launched on :0 in spawn-at-startup below.
+    environment = {
+      DISPLAY = ":0";
+    };
+
+    # Spawn a clipboard manager + idle handler + XWayland bridge at
+    # session start.
     spawn-at-startup = [
       {
         command = [
@@ -146,6 +154,19 @@ in
           "niri msg action power-off-monitors"
           "before-sleep"
           "swaylock -f"
+        ];
+      }
+      # XWayland bridge — needed for Steam, JetBrains IDEs, Zoom, and
+      # any other X11-only app. xwayland-satellite creates
+      # /tmp/.X11-unix/X0 on demand and proxies it to the running
+      # niri compositor. The explicit ":0" matches the DISPLAY env
+      # var above; if that ever conflicts with a real X server on
+      # the box (it won't on a Wayland-only niri session) bump both
+      # to ":2" in lockstep.
+      {
+        command = [
+          "xwayland-satellite"
+          ":0"
         ];
       }
     ];
