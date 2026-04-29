@@ -80,6 +80,21 @@
     MANPAGER = "nvim +Man!";
   };
 
+  # VSCode / VSCodium / Electron apps built on top of libsecret
+  # pick up the `password-store` setting from ~/.vscode/argv.json.
+  # Without this they guess at the backend and sometimes fall back
+  # to `basic text encoding` (plain-XOR), triggering the "weaker
+  # encryption" prompt. Pinning `gnome-libsecret` makes VSCode
+  # always route credentials through gnome-keyring, which we
+  # enable system-wide in modules/nixos/desktop/keyring.nix.
+  #
+  # https://code.visualstudio.com/docs/configure/settings-sync#_troubleshooting-keychain-issues
+  home.file.".vscode/argv.json".text = builtins.toJSON {
+    password-store = "gnome-libsecret";
+    # keep VSCode's own runtime args stable — no extra flags here.
+    enable-crash-reporter = false;
+  };
+
   # Note: allowUnfree is set once at the system level via
   # lib/nix-settings.nix.
 

@@ -14,6 +14,8 @@
     (modulesHome + /core.nix)
     (modulesHome + /sops.nix)
     (modulesHome + /desktop/niri-dms.nix)
+    (modulesHome + /desktop/chat.nix)
+    (modulesHome + /desktop/apps.nix)
     (modulesHome + /editors/nixvim.nix)
     (modulesHome + /tooling/devops.nix)
   ];

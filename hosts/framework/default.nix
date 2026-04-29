@@ -45,6 +45,10 @@
     (modulesNixos + /desktop/sound.nix)
     (modulesNixos + /desktop/firefox.nix)
 
+    # gnome-keyring as Secret Service provider — fixes VSCode /
+    # Firefox / gh CLI falling back to "basic text encoding".
+    (modulesNixos + /desktop/keyring.nix)
+
     # Sway as a Wayland fallback session — gives ly a second
     # `wayland-sessions/*.desktop` to offer, so if niri ever breaks
     # we still have a working compositor to log into.

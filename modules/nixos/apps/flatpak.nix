@@ -49,7 +49,14 @@
     # `flatpak install` from a terminal, the reconciler will leave
     # those alone (uninstallUnused = false below).
     packages = [
-      # Examples — uncomment or add as needed:
+      # Soundux — soundboard for PipeWire. Upstream is unmaintained
+      # and was dropped from nixpkgs (PR #384195), so we go flatpak.
+      {
+        appId = "io.github.Soundux";
+        origin = "flathub";
+      }
+
+      # Templates for when you want to add more later:
       # { appId = "com.discordapp.Discord";   origin = "flathub"; }
       # { appId = "com.spotify.Client";       origin = "flathub"; }
       # { appId = "org.signal.Signal";        origin = "flathub"; }
