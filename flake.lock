@@ -381,6 +381,22 @@
         "type": "github"
       }
     },
+    "nix-flatpak": {
+      "locked": {
+        "lastModified": 1777402031,
+        "narHash": "sha256-6gkfl9y3+ti0Z6dgby8/R4/DRT8sWU0I0TLCIxwWtjk=",
+        "ref": "main",
+        "rev": "22a3adbe7c5c8c8a10a635d32c9ef7fc01a6e4b8",
+        "revCount": 116,
+        "type": "git",
+        "url": "https://github.com/gmodena/nix-flatpak"
+      },
+      "original": {
+        "ref": "main",
+        "type": "git",
+        "url": "https://github.com/gmodena/nix-flatpak"
+      }
+    },
     "nixos-unstable": {
       "locked": {
         "lastModified": 1776877367,
@@ -512,6 +528,7 @@
         "lix-module": "lix-module",
         "night-nur": "night-nur",
         "niri": "niri",
+        "nix-flatpak": "nix-flatpak",
         "nixos-unstable": "nixos-unstable",
         "nixvim": "nixvim",
         "sops-nix": "sops-nix",

@@ -49,6 +49,13 @@
     (modulesNixos + /desktop/sound.nix)
     (modulesNixos + /desktop/firefox.nix)
 
+    # Steam + gamescope + gamemode + Proton-GE.
+    (modulesNixos + /apps/steam.nix)
+
+    # Flatpak + Flathub (declarative via nix-flatpak module).
+    inputs.nix-flatpak.nixosModules.nix-flatpak
+    (modulesNixos + /apps/flatpak.nix)
+
     # Security: doas only.
     (modulesNixos + /security.nix)
 
@@ -133,14 +140,9 @@
   };
 
   # --- Programs -----------------------------------------------------------
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
-    gamescopeSession.enable = true;
-  };
-
-  programs.gamemode.enable = true;
+  # Steam, gamescope, gamemode, Proton-GE all live in
+  # ../../modules/nixos/apps/steam.nix (imported above) so the framework
+  # gets the same gaming stack.
 
   zramSwap.enable = true;
 
