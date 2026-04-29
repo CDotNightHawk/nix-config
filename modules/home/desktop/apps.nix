@@ -39,11 +39,5 @@
     # Prism Launcher — Minecraft launcher (MultiMC fork). Handles
     # mod loaders, Java version juggling, per-instance Java opts.
     prismlauncher
-
-    # Bottles — Wine prefix manager. Native nix build works; if
-    # you hit 32-bit wine dependency issues, switch this entry to
-    # the flatpak version (com.usebottles.bottles) in
-    # modules/nixos/apps/flatpak.nix.
-    bottles
   ];
 }

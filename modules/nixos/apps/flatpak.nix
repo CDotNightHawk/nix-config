@@ -55,6 +55,10 @@
         appId = "io.github.Soundux";
         origin = "flathub";
       }
+      {
+        appId = "com.usebottles.bottles";
+        origin = "flathub";
+      }
 
       # Templates for when you want to add more later:
       # { appId = "com.discordapp.Discord";   origin = "flathub"; }
