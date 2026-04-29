@@ -12,6 +12,18 @@
   ...
 }:
 
+let
+  powerMenu = pkgs.writeShellScriptBin "power-menu" ''
+    choice=$(echo -e "suspend\nreboot\npoweroff\nlogout\nlock" | ${pkgs.fuzzel}/bin/fuzzel --dmenu -p "Power: ")
+    case "$choice" in
+      suspend) systemctl suspend ;;
+      reboot) systemctl reboot ;;
+      poweroff) systemctl poweroff ;;
+      logout) niri msg action quit ;;
+      lock) swaylock -f ;;
+    esac
+  '';
+in
 {
   imports = [
     inputs.dms.homeModules.dank-material-shell
