@@ -92,6 +92,14 @@
       url = "git+https://github.com/nix-community/nixvim";
       inputs.nixpkgs.follows = "nixos-unstable";
     };
+
+    # nix-flatpak: declarative Flathub app management. Lets us pin the
+    # set of installed flatpaks in the flake the same way we pin nix
+    # packages, instead of relying on `flatpak install` muscle memory.
+    # See modules/nixos/apps/flatpak.nix.
+    nix-flatpak = {
+      url = "git+https://github.com/gmodena/nix-flatpak?ref=main";
+    };
   };
 
   outputs =

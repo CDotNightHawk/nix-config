@@ -53,6 +53,13 @@
     # CUPS + cups-pk-helper + driver bundles + mDNS printer discovery.
     (modulesNixos + /services/printing.nix)
 
+    # Steam + gamescope + gamemode + Proton-GE.
+    (modulesNixos + /apps/steam.nix)
+
+    # Flatpak + Flathub (declarative via nix-flatpak module).
+    inputs.nix-flatpak.nixosModules.nix-flatpak
+    (modulesNixos + /apps/flatpak.nix)
+
     # Security: doas only.
     (modulesNixos + /security.nix)
 
