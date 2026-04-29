@@ -76,10 +76,14 @@
     substituters = lib.mkForce [
       "https://cache.nixos.org"
       "https://nighthawk.cachix.org"
+      # Without cache.lix.systems the Nix daemon has to compile lix
+      # itself (~10 min of clang/ninja) on every fresh install.
+      "https://cache.lix.systems"
     ]; # "https://attic.nanofox.dev/cdotnighthawk"
     trusted-public-keys = lib.mkForce [
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       "nighthawk.cachix.org-1:+Ppa/mjYFZFhMz95oSQNRJo+J9koACCy/4GtcautuYc="
+      "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o="
     ];
     # this will be overridden in home-manager
     netrc-file = "/etc/nix/netrc";

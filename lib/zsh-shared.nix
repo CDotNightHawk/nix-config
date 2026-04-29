@@ -29,14 +29,12 @@ in
   # Home Manager: initContent
   interactiveShellInit = ''
     if [ `id -u` != 0 ]; then
-      if [ "$IGNORE_DOTFILE_SECRETS" != "1" ]; then
-        if [ -e "$HOME/.shellsecrets" ]; then
-          source "$HOME/.shellsecrets"
-        else
-          echo "Could not find shellsecrets."
-          echo "  git clone git@github.com:ihaveamac/dotfilesecrets ~/.dotfilesecrets"
-          echo "  cd ~/.dotfilesecrets && ./link.bash"
-        fi
+      # Optional: per-user shell secrets. Set $SHELLSECRETS_NOTICE=1 if you
+      # want a hint when the file is missing; otherwise stay silent.
+      if [ "$IGNORE_DOTFILE_SECRETS" != "1" ] && [ -e "$HOME/.shellsecrets" ]; then
+        source "$HOME/.shellsecrets"
+      elif [ "$SHELLSECRETS_NOTICE" = "1" ] && [ "$IGNORE_DOTFILE_SECRETS" != "1" ]; then
+        echo "Note: ~/.shellsecrets not found. Set IGNORE_DOTFILE_SECRETS=1 to silence."
       fi
 
       PS1_PROMPT_CHAR="%%"

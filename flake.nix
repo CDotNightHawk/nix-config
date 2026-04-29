@@ -6,9 +6,13 @@
   nixConfig = {
     extra-substituters = [
       "https://nighthawk.cachix.org"
+      # Lix's binary cache. Without this the lix-module input forces a
+      # ~10-minute clang/ninja build of Lix on every fresh machine.
+      "https://cache.lix.systems"
     ];
     extra-trusted-public-keys = [
       "nighthawk.cachix.org-1:+Ppa/mjYFZFhMz95oSQNRJo+J9koACCy/4GtcautuYc="
+      "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o="
     ];
   };
 
