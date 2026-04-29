@@ -68,6 +68,7 @@
     pywalfox-native
     zed-editor
     vscode
+    bitwarden-desktop
   ];
 
   home.sessionVariables = with config.xdg; {
