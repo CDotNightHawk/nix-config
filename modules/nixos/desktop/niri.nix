@@ -67,5 +67,18 @@
     libnotify
     mako # notification daemon (fallback if DMS isn't running)
     fuzzel # launcher (fallback)
+
+    # XWayland bridge for niri. niri is pure Wayland and ships no
+    # built-in XWayland server (unlike sway/hyprland), so X11 apps
+    # — Steam, JetBrains IDEs, Zoom, a long tail of Electron apps
+    # that still haven't flipped on Wayland — fail with "Unable to
+    # open a connection to X" unless an external XWayland proxy is
+    # running. xwayland-satellite launches XWayland on-demand when
+    # an X client tries to connect to DISPLAY.
+    #
+    # Spawning + DISPLAY wiring happens in the home-manager niri
+    # config (modules/home/desktop/niri-dms.nix) so it only runs
+    # inside a niri session.
+    xwayland-satellite
   ];
 }
