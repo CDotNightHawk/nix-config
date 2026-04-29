@@ -25,6 +25,21 @@
     niri = {
       enableKeybinds = true;
       enableSpawn = true;
+      # By default DMS rewrites ~/.config/niri/config.kdl to
+      # `include "dms/{alttab,binds,colors,layout,outputs,wpblur}.kdl"`,
+      # but those `dms/*.kdl` files are only written at runtime by the
+      # DMS QuickShell process. On first boot niri reads the config
+      # before DMS has had a chance to start, the includes resolve to
+      # nothing, and niri's KDL parser hard-fails with
+      #   "failed to read included config from .../dms/alttab.kdl"
+      # (see DankMaterialShell distro/nix/niri.nix; the upstream module
+      # itself notes that combining enableKeybinds + includes.enable is
+      # not recommended, and is waiting on niri-flake#1548).
+      #
+      # `enableKeybinds` already pulls every DMS keybind into the
+      # niri-flake-generated config, so we don't need the runtime
+      # includes — turn them off.
+      includes.enable = false;
     };
   };
 
