@@ -2,7 +2,6 @@
 {
   config,
   lib,
-  pkgs,
   me,
   ...
 }:
@@ -19,14 +18,20 @@
   # Print a closure diff after every nixos-rebuild switch. Lets you
   # see at a glance which packages got added/removed/upgraded — handy
   # when you want to know whether a rebuild is safe to `switch` or
-  # whether you should `boot` first (e.g. dbus/systemd churn). Output
-  # is piped through nvd if available, otherwise nix store diff-closures.
+  # whether you should `boot` first (e.g. dbus/systemd churn). We use
+  # `nix store diff-closures` instead of nvd because nvd shells out to
+  # `nix-build --version` to detect the nix version and that binary
+  # isn't on PATH inside system activation scripts (lix exposes its
+  # CLI through the `nix` multi-call binary; the legacy `nix-build`
+  # symlink lives in a different output and we don't pull it in here).
   system.activationScripts.diff = {
     supportsDryActivation = true;
     text = ''
       if [ -e /run/current-system ]; then
         echo "--- closure diff: /run/current-system → $systemConfig ---"
-        ${pkgs.nvd}/bin/nvd --color always diff /run/current-system "$systemConfig" || true
+        ${config.nix.package}/bin/nix \
+          --extra-experimental-features 'nix-command' \
+          store diff-closures /run/current-system "$systemConfig" || true
       fi
     '';
   };

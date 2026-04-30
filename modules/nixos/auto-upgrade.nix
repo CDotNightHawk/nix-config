@@ -20,11 +20,11 @@
   pkgs,
   ...
 }:
- 
+
 {
   system.autoUpgrade = {
     enable = true;
- 
+
     # Point at the user's working clone. `system.autoUpgrade` runs as
     # root, but root can read /home/nighthawk just fine. Using the
     # same checkout the user edits means a manual `git pull` and an
@@ -33,16 +33,16 @@
     # NOTE: this path must exist on the system — the bootstrap is
     # `git clone https://github.com/CDotNightHawk/nix-config ~/nix-config`.
     # If you ever move/rename the clone, update this string too.
-    flake = "/home/nighthawk/nix-config#${config.networking.hostName}"; 
+    flake = "/home/nighthawk/nix-config#${config.networking.hostName}";
     # `boot` instead of the default `switch`. See header.
     operation = "boot";
- 
+
     # Update flake inputs (nixpkgs, niri, dms, lix, etc.) before
     # building, so the weekly job actually picks up new versions.
     # We deliberately do NOT pass `--commit-lock-file`: the systemd
     # job runs as root and root has no git identity configured;
     # leaving flake.lock dirty lets you review the diff and commit
-    # when you're ready (`cd ~/nix-config && git diff flake.lock`).    
+    # when you're ready (`cd ~/nix-config && git diff flake.lock`).
     flags = [
       "--update-input"
       "nixos-unstable"
@@ -57,22 +57,22 @@
       "--update-input"
       "lix-module"
     ];
- 
+
     # Sundays at 04:00 local time. systemd will run the job on
     # next boot if the laptop was suspended/off at the scheduled
     # time (Persistent=true is set by the NixOS module by default).
     dates = "Sun *-*-* 04:00:00";
- 
+
     # Random ±30min jitter so a fleet of machines doesn't hammer
     # cache.nixos.org / cachix at the same instant.
     randomizedDelaySec = "30min";
- 
+
     # Don't reboot automatically. We want the user to reboot when
     # they're ready (and to *see* the closure diff — see sundry.nix
     # — so they know whether the new generation touched dbus).
     allowReboot = false;
   };
- 
+
   # Keep ~6 weeks of generations available in the bootloader so a bad
   # auto-upgrade is always one reboot away from being undone.
   # `boot.loader.systemd-boot.configurationLimit` is set per-host;
