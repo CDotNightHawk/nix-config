@@ -1,11 +1,24 @@
 # Inspired by https://codeberg.org/ihaveahax/nix-config
 {
   config,
+  lib,
   pkgs,
   me,
   r,
   ...
 }:
+
+let
+  # Only enable the web-server-oriented fail2ban jails when their
+  # respective daemons are actually running. On a desktop neither
+  # apache nor nginx is running, and fail2ban hard-fails to start
+  # if a jail's logpath glob expands to nothing
+  # (e.g. `/var/log/httpd/error_log*` → ERROR Failed during
+  # configuration: Have not found any log file for
+  # apache-nohome-iptables jail).
+  apacheRunning = config.services.httpd.enable or false;
+  nginxRunning = config.services.nginx.enable or false;
+in
 
 {
   users.users = {
@@ -42,29 +55,33 @@
       maxtime = "168h"; # Do not ban for more than 1 week
       overalljails = true; # Calculate the bantime based on all the violations
     };
-    jails = {
-      apache-nohome-iptables.settings = {
-        # Block an IP address if it accesses a non-existent home directory more than 5 times in 10 minutes,
-        filter = "apache-nohome";
-        action = ''iptables-multiport[name=HTTP, port="http,https"]'';
-        logpath = "/var/log/httpd/error_log*";
-        backend = "auto";
-        findtime = 600;
-        bantime = 600;
-        maxretry = 5;
-      };
-      nginx-url-probe.settings = {
-        enabled = true;
-        filter = "nginx-url-probe";
-        logpath = "/var/log/nginx/access.log";
-        action = ''
-          %(action_)s[blocktype=DROP]
-                           ntfy'';
-        backend = "auto";
-        maxretry = 5;
-        findtime = 600;
-      };
-    };
+    jails = lib.mkMerge [
+      (lib.mkIf apacheRunning {
+        apache-nohome-iptables.settings = {
+          # Block an IP address if it accesses a non-existent home directory more than 5 times in 10 minutes,
+          filter = "apache-nohome";
+          action = ''iptables-multiport[name=HTTP, port="http,https"]'';
+          logpath = "/var/log/httpd/error_log*";
+          backend = "auto";
+          findtime = 600;
+          bantime = 600;
+          maxretry = 5;
+        };
+      })
+      (lib.mkIf nginxRunning {
+        nginx-url-probe.settings = {
+          enabled = true;
+          filter = "nginx-url-probe";
+          logpath = "/var/log/nginx/access.log";
+          action = ''
+            %(action_)s[blocktype=DROP]
+                             ntfy'';
+          backend = "auto";
+          maxretry = 5;
+          findtime = 600;
+        };
+      })
+    ];
   };
   environment.etc = {
     # Define an action that will trigger a Ntfy push notification upon the issue of every new ban

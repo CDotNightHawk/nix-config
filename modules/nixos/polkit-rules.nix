@@ -18,36 +18,36 @@
   pkgs,
   ...
 }:
- 
+
 {
   # `nighthawk` is in the wheel group (set in modules/nixos/users.nix).
   # The default polkit policy in NixOS already prompts wheel users for
   # *their own* password instead of root's; we relax that to no-prompt
   # for the specific action namespaces below.
   security.polkit.enable = true;
- 
+
   security.polkit.extraConfig = ''
     polkit.addRule(function(action, subject) {
       if (!subject.isInGroup("wheel")) {
         return polkit.Result.NOT_HANDLED;
       }
- 
+
       var passwordlessActions = [
         // CUPS — add/remove/configure printers, manage jobs
         "org.opensuse.cupspkhelper.mechanism.",
- 
+
         // NetworkManager — enable/disable wifi, switch connections,
         // edit system connections (so the DMS network applet just works)
         "org.freedesktop.NetworkManager.",
- 
+
         // fwupd — apply firmware updates without typing a password
         // mid-update (this matters: fwupd updates are interactive and
         // a password prompt during a UEFI capsule write is dangerous)
         "org.freedesktop.fwupd.",
- 
+
         // udisks2 — mount external USB drives, NTFS partitions, etc.
         "org.freedesktop.udisks2.",
- 
+
         // GNOME control center / DMS settings panel power actions —
         // suspend, reboot, poweroff. Already-default for active session
         // but explicit is fine.
@@ -55,12 +55,12 @@
         "org.freedesktop.login1.reboot",
         "org.freedesktop.login1.power-off",
         "org.freedesktop.login1.hibernate",
- 
+
         // Bluetooth pairing / connection management
         "org.blueman.",
         "org.bluez."
       ];
- 
+
       for (var i = 0; i < passwordlessActions.length; i++) {
         var prefix = passwordlessActions[i];
         // endsWith "." → namespace match; else exact match
@@ -72,7 +72,7 @@
           return polkit.Result.YES;
         }
       }
- 
+
       return polkit.Result.NOT_HANDLED;
     });
   '';
