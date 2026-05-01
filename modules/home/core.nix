@@ -73,6 +73,8 @@
     freecad
     feishin
     bitwarden-desktop
+    wireguard-go
+    wg-netmanager
   ];
 
   home.sessionVariables = with config.xdg; {
