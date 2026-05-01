@@ -6,24 +6,14 @@
 #   chmod 600 ~/.config/sops/age/keys.txt
 #
 # Then copy the public key from `age-keygen -y ~/.config/sops/age/keys.txt`
-# into .sops.yaml and (re-)create the encrypted payloads under
-# secrets/keys/ — see the comments in this file for the schema each
-# secret expects.
+# into .sops.yaml and re-encrypt any secrets that should be accessible
+# from this host with `sops updatekeys secrets/keys/**/*.yaml`.
 #
-# This module degrades gracefully in two ways:
-#
-#   1. If the user hasn't bootstrapped ~/.config/sops/age/keys.txt yet,
-#      the systemd `sops-nix` user unit's `ExecCondition` returns
-#      non-zero and systemd marks the unit *skipped* (not failed), so
-#      home-manager activation succeeds. See `Service.ExecCondition`
-#      below.
-#
-#   2. If the encrypted source files in secrets/keys/ haven't been
-#      created yet (e.g. fresh checkout, lost private key), the
-#      `sops.secrets` declarations are simply omitted at evaluation
-#      time. That keeps `nix flake check` green and avoids the
-#      "Path 'secrets/keys/...' does not exist in Git repository"
-#      error from importing a missing path into the store.
+# If keys.txt is missing at home-manager activation time, the
+# `sops-nix.service` user unit is skipped (not failed) — see the
+# `Service.ExecCondition` override below. That keeps `home-manager
+# switch` green on a fresh install before you've bootstrapped the
+# key, instead of leaving the user session in a degraded state.
 {
   config,
   lib,
