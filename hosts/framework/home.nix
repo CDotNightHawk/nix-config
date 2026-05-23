@@ -16,6 +16,7 @@
     (modulesHome + /desktop/niri-dms.nix)
     (modulesHome + /desktop/chat.nix)
     (modulesHome + /desktop/apps.nix)
+    (modulesHome + /desktop/spicetify.nix)
     (modulesHome + /editors/nixvim.nix)
     (modulesHome + /tooling/devops.nix)
   ];
