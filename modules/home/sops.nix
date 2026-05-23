@@ -23,21 +23,39 @@
   ...
 }:
 
+let
+  # Anchor each encrypted file once so the rest of the module can
+  # reference it without re-typing the path. `pathExists` runs at
+  # eval time against the (flake-locked) source tree, which is exactly
+  # the granularity we want — once the file is committed, the next
+  # `home-manager switch` picks it up automatically.
+  githubSecretsFile = r.root + /secrets/keys/git/github.yaml;
+  hasGithubSecrets = builtins.pathExists githubSecretsFile;
+in
 {
   imports = [ inputs.sops-nix.homeManagerModules.sops ];
 
   sops = {
-    defaultSopsFile = r.root + /secrets/keys/git/github.yaml;
     age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
+  }
+  // lib.optionalAttrs hasGithubSecrets {
+    defaultSopsFile = githubSecretsFile;
 
+    # Schema for secrets/keys/git/github.yaml (sops --age <pubkey>):
+    #   github_token: <PAT with repo + workflow scopes>
+    #   github_ssh_key: |
+    #     -----BEGIN OPENSSH PRIVATE KEY-----
+    #     ...
+    #     -----END OPENSSH PRIVATE KEY-----
     secrets.github_ssh_key = {
       path = "${config.home.homeDirectory}/.ssh/id_github";
       mode = "0400";
+      sopsFile = githubSecretsFile;
     };
 
     secrets.github_token = {
       format = "yaml";
-      sopsFile = r.root + /secrets/keys/git/github.yaml;
+      sopsFile = githubSecretsFile;
     };
   };
 
