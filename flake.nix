@@ -100,6 +100,14 @@
     nix-flatpak = {
       url = "git+https://github.com/gmodena/nix-flatpak?ref=main";
     };
+
+    # spicetify-nix: declarative Spotify customisation via spicetify-cli.
+    # Provides themes, extensions (adblock, hidePodcasts, …), and custom
+    # apps as Nix options.  See modules/home/desktop/spicetify.nix.
+    spicetify-nix = {
+      url = "git+https://github.com/Gerg-L/spicetify-nix";
+      inputs.nixpkgs.follows = "nixos-unstable";
+    };
   };
 
   outputs =
@@ -118,6 +126,7 @@
       dms,
       dgop,
       nixvim,
+      spicetify-nix,
       ...
     }:
     let
