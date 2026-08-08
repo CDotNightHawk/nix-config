@@ -1,11 +1,5 @@
 # Inspired by https://codeberg.org/ihaveahax/nix-config
-{
-  config,
-  lib,
-  pkgs,
-  me,
-  ...
-}:
+{ config, ... }:
 
 {
   environment.sessionVariables = {
@@ -16,11 +10,5 @@
     ZDOTDIR = "$HOME/.config/zsh";
   };
 
-  programs.bash.shellInit = ''
-    export HISTFILE=${config.environment.sessionVariables.XDG_STATE_HOME}/bash_history
-  '';
-
-  # since ZDOTDIR is set globally, i don't need this useless .zshenv file
-  home-manager.users.${me}.home.file.".zshenv".enable = false;
-  home-manager.users.root.home.file.".zshenv".enable = false;
+  programs.bash.shellInit = "export HISTFILE=${config.environment.sessionVariables.XDG_STATE_HOME}/bash_history";
 }

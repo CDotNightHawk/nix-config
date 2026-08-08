@@ -1,5 +1,5 @@
 # Inspired by https://codeberg.org/ihaveahax/nix-config
-{ config, pkgs, ... }:
+{ config, ... }:
 
 {
   home = {
@@ -13,12 +13,10 @@
       DOCKER_CONFIG = "${configHome}/docker";
       DOTNET_CLI_HOME = "${dataHome}/dotnet";
       GTK2_RC_FILES = "${configHome}/gtk-2.0/gtkrc";
-      # does this require the directory to be made?
       XCOMPOSECACHE = "${cacheHome}/X11/xcompose";
       WINEPREFIX = "${dataHome}/wine";
       DPREFIX = "${dataHome}/darling";
-      # setting this to the file directly doesn't work well on the NixOS desktop
-      # environment variables don't refresh until i restart, for some reason
+      # Point at a stable path so interpreter updates do not rewrite PYTHONSTARTUP.
       PYTHONSTARTUP = "${configHome}/python/pythonrc";
       NUGET_PACKAGES = "${cacheHome}/NuGetPackages";
       LESSHISTFILE = "${stateHome}/less_history";

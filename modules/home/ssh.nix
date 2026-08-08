@@ -1,5 +1,4 @@
-# Inspired by https://codeberg.org/ihaveahax/nix-config
-{ config, pkgs, ... }:
+_:
 
 let
   addKeysToAgent = "yes";

@@ -1,19 +1,12 @@
-# Spicetify — declarative Spotify customisation.
-#
-# Wraps spicetify-nix's home-manager module to produce a "spiced"
-# Spotify package with the extensions listed below baked in.  Adding
-# or removing extensions is a one-line change; run
-#   nixos-rebuild switch --flake .#<host>
-# and relaunch Spotify.
+# Declarative Spotify customization.
 {
-  lib,
   pkgs,
   inputs,
   ...
 }:
 
 let
-  spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.system};
+  spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.stdenv.hostPlatform.system};
 in
 {
   imports = [ inputs.spicetify-nix.homeManagerModules.default ];

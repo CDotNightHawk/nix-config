@@ -1,10 +1,4 @@
-# Inspired by https://codeberg.org/ihaveahax/nix-config
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ pkgs, ... }:
 
 {
   environment.systemPackages = [

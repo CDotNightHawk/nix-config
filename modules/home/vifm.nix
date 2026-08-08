@@ -1,14 +1,12 @@
 # Inspired by https://codeberg.org/ihaveahax/nix-config
 {
-  config,
   lib,
   pkgs,
   ...
 }:
 
 let
-  isLinux = pkgs.stdenv.isLinux;
-  isDarwin = pkgs.stdenv.isDarwin;
+  inherit (pkgs.stdenv) isDarwin isLinux;
 in
 {
   programs.vifm = {

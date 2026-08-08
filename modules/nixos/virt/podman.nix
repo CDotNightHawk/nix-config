@@ -1,7 +1,4 @@
-# Inspired by https://codeberg.org/ihaveahax/nix-config
 {
-  config,
-  pkgs,
   lib,
   me,
   ...
@@ -10,10 +7,13 @@
 {
   virtualisation = {
     containers.enable = true;
+    oci-containers.backend = "podman";
     podman = {
       enable = true;
+      dockerCompat = true;
+      dockerSocket.enable = true;
+      defaultNetwork.settings.dns_enabled = true;
     };
-
     containers.registries.search = lib.mkForce [ "docker.io" ];
   };
 
@@ -21,14 +21,14 @@
     extraGroups = [ "podman" ];
     subUidRanges = [
       {
-        count = 99999;
         startUid = 100000;
+        count = 65536;
       }
     ];
     subGidRanges = [
       {
-        count = 99999;
         startGid = 100000;
+        count = 65536;
       }
     ];
   };

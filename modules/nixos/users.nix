@@ -1,7 +1,4 @@
-# Inspired by https://codeberg.org/ihaveahax/nix-config
 {
-  config,
-  lib,
   pkgs,
   me,
   ...
@@ -13,8 +10,6 @@
     isNormalUser = true;
     extraGroups = [ "wheel" ];
     linger = true;
-    # this gets set by modules/nixos/zsh.nix
-    #shell = pkgs.zsh;
     uid = 1000;
   };
 

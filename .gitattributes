@@ -1,0 +1,8 @@
+* text=auto
+*.nix text eol=lf
+*.lock text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+.envrc text eol=lf
+justfile text eol=lf

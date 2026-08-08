@@ -1,12 +1,7 @@
 # Framework 13 AMD-specific hardware tweaks that are NOT safe to put
 # into the auto-generated hardware-configuration.nix (which is overwritten
 # by nixos-generate-config).
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+_:
 
 {
   # NOTE: do not declare `fileSystems.<mp>` here as a partial override

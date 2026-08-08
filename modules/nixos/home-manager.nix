@@ -2,7 +2,6 @@
 {
   config,
   lib,
-  pkgs,
   me,
   r,
   inputs,
@@ -22,39 +21,36 @@ in
     backupFileExtension = "backup";
     extraSpecialArgs = { inherit inputs my-inputs r; };
 
-    users.${me} =
-      { pkgs, ... }:
-      {
-        # the order of this matters
-        imports = [ ];
+    users.${me} = _: {
+      # the order of this matters
+      imports = [ ];
 
-        home = {
-          username = me;
-          homeDirectory = homedir;
-        };
-
-        programs.home-manager.enable = lib.mkForce false;
-        # I think this should be managed system-wide?
-        fonts.fontconfig.enable = lib.mkForce false;
-
-        # cannot be set when useGlobalPkgs is true
-        nixpkgs.config = lib.mkForce null;
+      home = {
+        username = me;
+        homeDirectory = homedir;
       };
 
-    users.root =
-      { pkgs, ... }:
-      {
-        imports = [ (r.modulesHome + /core-root.nix) ];
+      programs.home-manager.enable = lib.mkForce false;
+      fonts.fontconfig.enable = lib.mkForce false;
+      home.file.".zshenv".enable = false;
 
-        home = {
-          username = "root";
-          homeDirectory = config.users.users.root.home;
-        };
+      # cannot be set when useGlobalPkgs is true
+      nixpkgs.config = lib.mkForce null;
+    };
 
-        programs.home-manager.enable = lib.mkForce false;
+    users.root = _: {
+      imports = [ (r.modulesHome + /core-root.nix) ];
 
-        # cannot be set when useGlobalPkgs is true
-        nixpkgs.config = lib.mkForce null;
+      home = {
+        username = "root";
+        homeDirectory = config.users.users.root.home;
       };
+
+      programs.home-manager.enable = lib.mkForce false;
+      home.file.".zshenv".enable = false;
+
+      # cannot be set when useGlobalPkgs is true
+      nixpkgs.config = lib.mkForce null;
+    };
   };
 }

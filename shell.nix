@@ -1,11 +1,21 @@
-{
-  pkgs ? import <nixpkgs> { },
-}:
+{ pkgs }:
 
-pkgs.mkShell {
-  name = "updater-thingy";
-  packages = with pkgs.python3Packages; [
-    python
-    requests
+pkgs.mkShellNoCC {
+  packages = with pkgs; [
+    actionlint
+    age
+    deadnix
+    git
+    just
+    nh
+    nil
+    nix-output-monitor
+    nixd
+    nixfmt
+    pre-commit
+    shellcheck
+    sops
+    statix
+    treefmt
   ];
 }

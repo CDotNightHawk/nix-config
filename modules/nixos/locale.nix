@@ -1,17 +1,9 @@
-# Inspired by https://codeberg.org/ihaveahax/nix-config
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+_:
 
 {
-  # Set your time zone.
   time.timeZone = "America/New_York";
 
   i18n = {
-    # Select internationalisation properties.
     defaultLocale = "en_US.UTF-8";
 
     extraLocaleSettings = {

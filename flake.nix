@@ -1,13 +1,9 @@
-# Inspired by https://codeberg.org/ihaveahax/nix-config
-# ~/nix-config/flake.nix
 {
-  description = "Nighthawk's NixOS Flake Configuration";
+  description = "NightHawk's NixOS systems";
 
   nixConfig = {
     extra-substituters = [
       "https://nighthawk.cachix.org"
-      # Lix's binary cache. Without this the lix-module input forces a
-      # ~10-minute clang/ninja build of Lix on every fresh machine.
       "https://cache.lix.systems"
     ];
     extra-trusted-public-keys = [
@@ -40,7 +36,6 @@
       inputs.nixpkgs.follows = "nixos-unstable";
       inputs.treefmt-nix.follows = "treefmt-nix";
     };
-    # https://git.lix.systems/lix-project/lix/issues/917
     lix = {
       url = "github:lix-project/lix";
       flake = false;
@@ -50,60 +45,31 @@
       inputs.nixpkgs.follows = "nixos-unstable";
       inputs.lix.follows = "lix";
     };
-
-    # Declarative disk partitioning (used by the workstation host).
     disko = {
       url = "git+https://github.com/nix-community/disko";
       inputs.nixpkgs.follows = "nixos-unstable";
     };
-
-    # niri Wayland compositor + Nix-typed config.
     niri = {
       url = "git+https://github.com/sodiboo/niri-flake";
       inputs.nixpkgs.follows = "nixos-unstable";
     };
-
-    # DankMaterialShell (QuickShell-based niri shell from danklinux.com).
     dms = {
       url = "git+https://github.com/AvengeMedia/DankMaterialShell?ref=stable";
       inputs.nixpkgs.follows = "nixos-unstable";
     };
-
-    # dgop is the system-monitor backend DMS uses. It's only in
-    # nixpkgs >= 26.05; on the pinned `nixos-unstable` it isn't
-    # available yet, so we fetch it from upstream.
     dgop = {
       url = "git+https://github.com/AvengeMedia/dgop";
       inputs.nixpkgs.follows = "nixos-unstable";
     };
-
-    # dsearch (a.k.a. danksearch): bleve-backed file index DMS' launcher
-    # uses for the file-search panel. Without this DMS' System Check
-    # flags it as "Not installed".
     dsearch = {
       url = "git+https://github.com/AvengeMedia/danksearch";
       inputs.nixpkgs.follows = "nixos-unstable";
     };
-
-    # NixVim: declarative Neovim config that fails at flake-check time
-    # if the config is wrong. Way more pleasant than reading raw .lua
-    # error messages on first boot.
     nixvim = {
       url = "git+https://github.com/nix-community/nixvim";
       inputs.nixpkgs.follows = "nixos-unstable";
     };
-
-    # nix-flatpak: declarative Flathub app management. Lets us pin the
-    # set of installed flatpaks in the flake the same way we pin nix
-    # packages, instead of relying on `flatpak install` muscle memory.
-    # See modules/nixos/apps/flatpak.nix.
-    nix-flatpak = {
-      url = "git+https://github.com/gmodena/nix-flatpak?ref=main";
-    };
-
-    # spicetify-nix: declarative Spotify customisation via spicetify-cli.
-    # Provides themes, extensions (adblock, hidePodcasts, …), and custom
-    # apps as Nix options.  See modules/home/desktop/spicetify.nix.
+    nix-flatpak.url = "git+https://github.com/gmodena/nix-flatpak?ref=main";
     spicetify-nix = {
       url = "git+https://github.com/Gerg-L/spicetify-nix";
       inputs.nixpkgs.follows = "nixos-unstable";
@@ -116,82 +82,104 @@
       nixos-unstable,
       home-manager,
       treefmt-nix,
-      lanzaboote,
       night-nur,
-      lix,
-      lix-module,
-      sops-nix,
-      disko,
-      niri,
-      dms,
-      dgop,
-      nixvim,
-      spicetify-nix,
       ...
     }:
     let
-      # Path-record. Use this in module imports so paths are anchored
-      # to the flake root regardless of which subdir a module lives in.
-      # NB: do NOT name a field `lib` — module function
-      # args expose `lib = nixpkgs.lib`, and `with r;` can't shadow
-      # function arguments, so `r.lib` would be unreachable inside a
-      # module body.
+      inherit (nixos-unstable) lib;
+      defaultUser = "nighthawk";
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
       r = {
         root = ./.;
         hosts = ./hosts;
+        profilesNixos = ./profiles/nixos;
+        profilesHome = ./profiles/home;
         modulesNixos = ./modules/nixos;
         modulesHome = ./modules/home;
         libs = ./lib;
         secrets = ./secrets;
       };
-      mkHost =
-        hostPath:
-        let
-          me = "nighthawk";
-          system = "x86_64-linux";
-        in
-        nixos-unstable.lib.nixosSystem {
-          inherit system;
-          specialArgs = mkSpecialArgs me system;
-          modules = [ hostPath ];
+      forAllSystems = lib.genAttrs systems;
+      mkSpecialArgs = system: {
+        inherit inputs r;
+        me = defaultUser;
+        my-inputs = {
+          home-manager-module = home-manager.nixosModules.home-manager;
+          night-nur = night-nur.packages.${system};
         };
-      mkSpecialArgs = (
-        me: system: {
-          inherit me inputs r;
-          my-inputs = {
-            # putting this in modules/nixos/home-manager.nix causes an infinite recursion error
-            home-manager-module = home-manager.nixosModules.home-manager;
-            night-nur = night-nur.outputs.packages.${system};
-          };
-        }
-      );
-      # mainly for treefmt-nix / devShells
-      systems = [
-        "x86_64-linux"
-        "aarch64-linux"
-      ];
-      forAllSystems = f: nixos-unstable.lib.genAttrs systems (system: f system);
+      };
+      mkHost =
+        {
+          host,
+          system ? "x86_64-linux",
+        }:
+        lib.nixosSystem {
+          inherit system;
+          specialArgs = mkSpecialArgs system;
+          modules = [ host ];
+        };
+      nixosConfigurations = {
+        framework = mkHost { host = ./hosts/framework; };
+        workstation = mkHost { host = ./hosts/workstation; };
+        server = mkHost { host = ./hosts/server; };
+      };
       treefmtEval = forAllSystems (
-        system:
-        let
-          pkgs = import nixos-unstable { inherit system; };
-        in
-        treefmt-nix.lib.evalModule pkgs ./treefmt.nix
+        system: treefmt-nix.lib.evalModule nixos-unstable.legacyPackages.${system} ./treefmt.nix
       );
+      mkEvaluationCheck =
+        pkgs: name: configuration:
+        pkgs.runCommand "nixos-${name}-evaluation"
+          {
+            drvPath = builtins.unsafeDiscardStringContext configuration.config.system.build.toplevel.drvPath;
+          }
+          ''
+            mkdir -p "$out"
+            printf '%s\n' "$drvPath" > "$out/drv-path"
+          '';
     in
     {
-      nixosConfigurations = {
-        framework = mkHost ./hosts/framework;
-        workstation = mkHost ./hosts/workstation;
+      inherit nixosConfigurations;
+
+      nixosModules = {
+        default = import ./profiles/nixos/base.nix;
+        base = import ./profiles/nixos/base.nix;
+        client = import ./profiles/nixos/client.nix;
+        incus = import ./modules/nixos/virt/incus.nix;
+        server = import ./profiles/nixos/server.nix;
       };
 
-      devShells.x86_64-linux.default = import ./shell.nix {
-        pkgs = import nixos-unstable { system = "x86_64-linux"; };
+      homeManagerModules = {
+        client = import ./profiles/home/client.nix;
+        development = import ./modules/home/tooling/development.nix;
       };
+
+      devShells = forAllSystems (
+        system:
+        let
+          pkgs = nixos-unstable.legacyPackages.${system};
+        in
+        {
+          default = import ./shell.nix { inherit pkgs; };
+        }
+      );
 
       formatter = forAllSystems (system: treefmtEval.${system}.config.build.wrapper);
-      checks = forAllSystems (system: {
-        formatting = treefmtEval.${system}.config.build.check self;
-      });
+
+      checks = forAllSystems (
+        system:
+        let
+          pkgs = nixos-unstable.legacyPackages.${system};
+          hostChecks = lib.mapAttrs' (
+            name: configuration: lib.nameValuePair "nixos-${name}" (mkEvaluationCheck pkgs name configuration)
+          ) nixosConfigurations;
+        in
+        {
+          formatting = treefmtEval.${system}.config.build.check self;
+        }
+        // lib.optionalAttrs (system == "x86_64-linux") hostChecks
+      );
     };
 }

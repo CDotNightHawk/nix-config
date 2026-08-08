@@ -1,8 +1,5 @@
-# Inspired by https://codeberg.org/ihaveahax/nix-config
 {
   config,
-  lib,
-  pkgs,
   me,
   ...
 }:
@@ -14,8 +11,6 @@
     dataDir = config.users.users.${me}.home;
     openDefaultPorts = true;
   };
-
-  networking.firewall.allowedTCPPorts = [ 8384 ];
 
   users.users.${me}.extraGroups = [ "syncthing" ];
 }

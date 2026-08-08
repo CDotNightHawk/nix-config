@@ -1,11 +1,3 @@
-# Desktop applications that don't belong in a more specific module.
-#
-# Everything here is native Nix where possible — we use flatpak as
-# a fallback only for apps that aren't in nixpkgs or that only
-# ship upstream as a flatpak.
-#
-# See modules/nixos/apps/flatpak.nix for the flatpak reconciler that
-# handles the few apps listed as flatpak-only here.
 {
   config,
   lib,
@@ -13,31 +5,53 @@
   ...
 }:
 
+let
+  cfg = config.nighthawk.desktopApps;
+in
 {
-  home.packages = with pkgs; [
-    # Portal for Teams — unofficial Electron Teams client. Works fine
-    # under Wayland via NIXOS_OZONE_WL (set in niri.nix).
-    teams-for-linux
+  options.nighthawk.desktopApps = {
+    enable = lib.mkEnableOption "the essential graphical application set";
+    cad.enable = lib.mkEnableOption "CAD and 3D-printing applications";
+    minecraft.enable = lib.mkEnableOption "Prism Launcher";
+    peerToPeer.enable = lib.mkEnableOption "peer-to-peer clients";
+    remoteAccess.enable = lib.mkEnableOption "remote-access clients";
+    teams.enable = lib.mkEnableOption "Microsoft Teams for Linux";
+  };
 
-    # Easy Effects — PipeWire audio-effects GUI (noise suppression,
-    # EQ, loudness). Pipes every sink through ladspa/lv2 plugins.
-    easyeffects
+  config = lib.mkIf cfg.enable {
+    home.packages =
+      (with pkgs; [
+        bitwarden-desktop
+        easyeffects
+        vscode
+      ])
+      ++ lib.optionals cfg.cad.enable (
+        with pkgs;
+        [
+          freecad
+          orca-slicer
+        ]
+      )
+      ++ lib.optionals cfg.minecraft.enable [ pkgs.prismlauncher ]
+      ++ lib.optionals cfg.peerToPeer.enable (
+        with pkgs;
+        [
+          nicotine-plus
+          transmission_4-gtk
+        ]
+      )
+      ++ lib.optionals cfg.remoteAccess.enable (
+        with pkgs;
+        [
+          rustdesk-flutter
+          termius
+        ]
+      )
+      ++ lib.optionals cfg.teams.enable [ pkgs.teams-for-linux ];
 
-    # RustDesk — open-source TeamViewer alternative. Use the Flutter
-    # build; the legacy Sciter UI (`rustdesk`) is deprecated
-    # upstream and flagged as such in nixpkgs.
-    rustdesk-flutter
-
-    # Transmission — BitTorrent client (GTK front-end). `_4-gtk`
-    # pins to the Transmission 4.x series which has WebRTC + IPv6
-    # fixes over the 3.x line still in nixos-stable.
-    transmission_4-gtk
-
-    # Nicotine+ — SoulSeek peer-to-peer client.
-    nicotine-plus
-
-    # Prism Launcher — Minecraft launcher (MultiMC fork). Handles
-    # mod loaders, Java version juggling, per-instance Java opts.
-    prismlauncher
-  ];
+    home.file.".vscode/argv.json".text = builtins.toJSON {
+      password-store = "gnome-libsecret";
+      enable-crash-reporter = false;
+    };
+  };
 }

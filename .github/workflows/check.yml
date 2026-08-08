@@ -36,11 +36,13 @@ jobs:
             .#nixosConfigurations.workstation.config.system.build.toplevel.drvPath \
             --raw --show-trace
 
-      # Real build of lix itself. `nix flake check --no-build` only
-      # checks evaluation; it doesn't notice that the pinned lix source
-      # fails to compile on the current toolchain. Building the lix
-      # package (or fetching it from cache.lix.systems) catches that
-      # before a user does `nixos-rebuild switch`.
+      - name: Evaluate server toplevel
+        run: |
+          nix eval \
+            .#nixosConfigurations.server.config.system.build.toplevel.drvPath \
+            --raw --show-trace
+
+      # Evaluation does not compile the pinned Lix source.
       - name: Build framework lix
         run: |
           nix build \

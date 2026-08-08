@@ -1,5 +1,5 @@
 # Inspired by https://codeberg.org/ihaveahax/nix-config
-{ config, pkgs, ... }:
+{ config, ... }:
 
 let
   allowedSignersPath = "${config.home.homeDirectory}/.ssh/allowed_signers";

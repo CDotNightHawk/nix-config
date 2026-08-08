@@ -11,8 +11,7 @@
 # Single NVMe BTRFS layout: rootfs / home / nix / persist / swap, all
 # zstd-compressed. Edit the `device =` line below to match your actual
 # disk.
-{ ... }:
-{
+_: {
   disko.devices = {
     disk.main = {
       type = "disk";

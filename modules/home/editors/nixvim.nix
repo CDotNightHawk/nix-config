@@ -1,14 +1,5 @@
-# NixVim — declarative Neovim. Replaces the old hand-rolled
-# extras/neovim-config.{vim,lua} setup with something that fails at
-# `nix flake check` time when a plugin is misconfigured.
-#
-# Goals: a sysadmin/devops/coding-friendly nvim with LSP, treesitter,
-# fuzzy finder, file tree, git integration, and the languages NightHawk
-# actually touches (Nix, Python, Go, TypeScript, Bash, Rust, YAML/JSON,
-# Terraform/HCL, Lua).
+# Declarative Neovim with development and operations tooling.
 {
-  config,
-  lib,
   pkgs,
   inputs,
   ...

@@ -27,10 +27,7 @@ in
     type = lib.types.enum (lib.attrNames flavors);
     default = "lts";
     example = "latest";
-    description = ''
-      Which kernel package set to install on this host. See
-      `flavors` in modules/nixos/kernel.nix for the mapping.
-    '';
+    description = "Kernel package set for this host.";
   };
 
   config.boot.kernelPackages = flavors.${cfg};

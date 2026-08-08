@@ -532,6 +532,7 @@
         "nixos-unstable": "nixos-unstable",
         "nixvim": "nixvim",
         "sops-nix": "sops-nix",
+        "spicetify-nix": "spicetify-nix",
         "treefmt-nix": "treefmt-nix"
       }
     },
@@ -576,6 +577,27 @@
         "url": "https://github.com/Mic92/sops-nix"
       }
     },
+    "spicetify-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixos-unstable"
+        ],
+        "systems": "systems_3"
+      },
+      "locked": {
+        "lastModified": 1785652745,
+        "narHash": "sha256-pD0VE/XwjQ3tLyxTzXKdm6JuIEWr/Jaote6xpXGZrXk=",
+        "ref": "refs/heads/master",
+        "rev": "802040514e09bb8539237f52f68cf053b987c65e",
+        "revCount": 1018,
+        "type": "git",
+        "url": "https://github.com/Gerg-L/spicetify-nix"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/Gerg-L/spicetify-nix"
+      }
+    },
     "systems": {
       "locked": {
         "lastModified": 1681028828,
@@ -592,6 +614,21 @@
       }
     },
     "systems_2": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_3": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",

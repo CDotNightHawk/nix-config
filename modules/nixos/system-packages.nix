@@ -1,53 +1,39 @@
-# Inspired by https://codeberg.org/ihaveahax/nix-config
 {
   config,
   lib,
   pkgs,
-  me,
   ...
 }:
 
 {
-  options.nightpkg.packages = with lib; {
-    enableExtra = mkOption {
-      default = true;
-      description = "Enable additional packages not meant for slimmer setups.";
-      type = types.bool;
-    };
+  options.nightpkg.packages.enableExtra = lib.mkOption {
+    type = lib.types.bool;
+    default = false;
+    description = "Install workstation-oriented diagnostics and documentation.";
   };
 
-  config = lib.mkMerge [
-    ({
-      environment.systemPackages = with pkgs; [
-        wget
-        pv
-        git
-        curl
-        file
-        psmisc
-        btop
-        (_7zz.override { enableUnfree = true; })
-        tree
-        xxd
-      ];
-    })
-    (lib.mkIf config.nightpkg.packages.enableExtra {
-      environment.systemPackages = with pkgs; [
-        powershell
-        usbutils
+  config.environment.systemPackages =
+    (with pkgs; [
+      btop
+      curl
+      file
+      git
+      lsof
+      psmisc
+      rsync
+      tree
+      unzip
+      wget
+      xxd
+      zip
+    ])
+    ++ lib.optionals config.nightpkg.packages.enableExtra (
+      with pkgs;
+      [
         binutils
-        pciutils
-        squashfuse # useful since i can use it as non-root, and override uid/gid
-        attic-client
-        nixfmt
-        #(p7zip.override { enableUnfree = true; })
         nixpkgs-manual
-        linux-manual
-        man-pages
-        man-pages-posix
-        zip
-        unzip
-      ];
-    })
-  ];
+        pciutils
+        usbutils
+      ]
+    );
 }

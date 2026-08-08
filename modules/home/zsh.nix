@@ -37,20 +37,16 @@ in
     };
     oh-my-zsh = {
       enable = true;
-      plugins = zshShared.ohMyZsh.plugins;
+      inherit (zshShared.ohMyZsh) plugins;
       extraConfig = zshShared.ohMyZsh.config;
     };
     envExtra = zshShared.shellInit;
-    initContent = ''
-      # manually set options
-      ${lib.optionalString (zshShared.options != [ ]) ''
-        # Set zsh options.
-        setopt ${builtins.concatStringsSep " " zshShared.options}
-      ''}
-
-      # global config
-      ${zshShared.interactiveShellInit}
-    '';
+    initContent = lib.concatStringsSep "\n" [
+      (lib.optionalString (
+        zshShared.options != [ ]
+      ) "setopt ${builtins.concatStringsSep " " zshShared.options}")
+      zshShared.interactiveShellInit
+    ];
     profileExtra = zshShared.loginShellInit;
   };
 
